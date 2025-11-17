@@ -2,19 +2,19 @@ body {
     background: rgba(255, 255, 255, 0.5);
     font-family: Open Sans, sans-serif;
     margin: 0 auto;
-    width: 1080px;
+    width: 800px;
 }
 
 #scroll-container {
     width: 100%;
     overflow: hidden;
     white-space: nowrap;
-    padding: 10px 0;
 }
 
 #scroll-text {
     display: inline-block;
     font-size: 48px;
+    font-weight: 700;
     will-change: transform;
     animation: scroll-left 20s linear infinite;
 }
