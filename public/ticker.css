@@ -1,0 +1,28 @@
+body {
+    font-family: Open Sans, sans-serif;
+    margin: 0 auto;
+    width: 1080px;
+}
+
+#scroll-container {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 10px 0;
+}
+
+#scroll-text {
+    display: inline-block;
+    font-size: 48px;
+    will-change: transform;
+    animation: scroll-left 20s linear infinite;
+}
+
+@keyframes scroll-left {
+    from {
+        transform: translateX(1080px);  /* text fully visible from the start */
+    }
+    to {
+        transform: translateX(-100%); /* scroll text off the left edge */
+    }
+}

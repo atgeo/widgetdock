@@ -1,0 +1,82 @@
+export const weatherCodeMap = {
+  0: { text: 'Clear sky', icon: '☀️' },
+  1: { text: 'Mainly clear', icon: '🌤️' },
+  2: { text: 'Partly cloudy', icon: '⛅' },
+  3: { text: 'Overcast', icon: '☁️' },
+
+  45: { text: 'Fog', icon: '🌫️' },
+  48: { text: 'Depositing rime fog', icon: '🌫️' },
+
+  51: { text: 'Light drizzle', icon: '🌦️' },
+  53: { text: 'Moderate drizzle', icon: '🌦️' },
+  55: { text: 'Dense drizzle', icon: '🌧️' },
+
+  56: { text: 'Freezing drizzle', icon: '🌧️' },
+  57: { text: 'Dense freezing drizzle', icon: '🌧️' },
+
+  61: { text: 'Slight rain', icon: '🌧️' },
+  63: { text: 'Moderate rain', icon: '🌧️' },
+  65: { text: 'Heavy rain', icon: '🌧️' },
+
+  66: { text: 'Light freezing rain', icon: '🌧️' },
+  67: { text: 'Heavy freezing rain', icon: '🌧️' },
+
+  71: { text: 'Slight snowfall', icon: '🌨️' },
+  73: { text: 'Moderate snowfall', icon: '🌨️' },
+  75: { text: 'Heavy snowfall', icon: '🌨️' },
+
+  77: { text: 'Snow grains', icon: '❄️' },
+
+  80: { text: 'Rain showers', icon: '🌧️' },
+  81: { text: 'Rain showers', icon: '🌧️' },
+  82: { text: 'Violent rain showers', icon: '🌧️' },
+
+  85: { text: 'Snow showers', icon: '🌨️' },
+  86: { text: 'Heavy snow showers', icon: '🌨️' },
+
+  95: { text: 'Thunderstorm', icon: '⛈️' },
+  96: { text: 'Thunderstorm + hail', icon: '⛈️' },
+  99: { text: 'Thunderstorm + heavy hail', icon: '⛈️' },
+}
+
+async function getCoordinates (city) {
+  const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(
+    city)}`
+  const res = await fetch(url)
+  const data = await res.json()
+
+  if (!data.results?.length) {
+    throw new Error(`City not found: ${city}`)
+  }
+
+  const { latitude, longitude } = data.results[0]
+  return { latitude, longitude }
+}
+
+async function getWeather (city) {
+  try {
+    const { latitude, longitude } = await getCoordinates(city)
+
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`
+    const res = await fetch(url)
+    const data = await res.json()
+
+    const cw = data.current_weather
+    const desc = weatherCodeMap[cw.weathercode] || 'Unknown'
+
+    return {
+      city,
+      temperature: cw.temperature,
+      code: cw.weathercode,
+      desc,
+    }
+  } catch (err) {
+    console.error(err)
+    return { city, error: true }
+  }
+}
+
+export async function getWeatherForCities (cities) {
+  const promises = cities.map(getWeather)
+  return Promise.all(promises)
+}
