@@ -54,8 +54,7 @@ function getConditions (code, is_day) {
 }
 
 async function getCoordinates (city) {
-  const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(
-    city)}`
+  const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}`
   const res = await fetch(url)
   const data = await res.json()
 
