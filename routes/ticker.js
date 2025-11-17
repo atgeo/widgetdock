@@ -18,7 +18,7 @@ router.post('/fetch', async (req, res) => {
     let items = []
 
     if (type === 'weather') {
-      const cities = ['Jakarta', 'Singapore', 'Dubai', 'Toronto', 'Paris', 'Sydney']
+      const cities = ['Miami', 'Toronto', 'Paris', 'Beirut', 'Nairobi', 'Dubai', 'New Delhi', 'Jakarta', 'Singapore', 'Tokyo', 'Sydney']
       const results = await getWeatherForCities(cities)
 
       const items = results.filter(r => !r.error).map(r => ({

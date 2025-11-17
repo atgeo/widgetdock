@@ -1,14 +1,14 @@
-export const weatherCodeMap = {
-  0: { text: 'Clear sky', icon: '☀️' },
-  1: { text: 'Mainly clear', icon: '🌤️' },
-  2: { text: 'Partly cloudy', icon: '⛅' },
+const weatherCodeMap = {
+  0: { text: 'Clear sky', icon: { 0: '🌙', 1: '☀️' } },
+  1: { text: 'Mainly clear', icon: { 0: '🌙', 1: '🌤️' } },
+  2: { text: 'Partly cloudy', icon: { 0: '☁️', 1: '⛅' } },
   3: { text: 'Overcast', icon: '☁️' },
 
   45: { text: 'Fog', icon: '🌫️' },
   48: { text: 'Depositing rime fog', icon: '🌫️' },
 
-  51: { text: 'Light drizzle', icon: '🌦️' },
-  53: { text: 'Moderate drizzle', icon: '🌦️' },
+  51: { text: 'Light drizzle', icon: { 0: '🌧️', 1: '🌦' } },
+  53: { text: 'Moderate drizzle', icon: { 0: '🌧️', 1: '🌦' } },
   55: { text: 'Dense drizzle', icon: '🌧️' },
 
   56: { text: 'Freezing drizzle', icon: '🌧️' },
@@ -39,6 +39,20 @@ export const weatherCodeMap = {
   99: { text: 'Thunderstorm + heavy hail', icon: '⛈️' },
 }
 
+function getConditions (code, is_day) {
+  const data = weatherCodeMap[code] || { text: 'Unknown', icon: '❓' }
+
+  let icon
+
+  if (typeof data.icon === 'object') {
+    icon = data.icon[is_day] ?? '❓'
+  } else {
+    icon = data.icon
+  }
+
+  return { text: data.text || 'Unknown', icon }
+}
+
 async function getCoordinates (city) {
   const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(
     city)}`
@@ -62,7 +76,7 @@ async function getWeather (city) {
     const data = await res.json()
 
     const cw = data.current_weather
-    const desc = weatherCodeMap[cw.weathercode] || 'Unknown'
+    const desc = getConditions(cw.weathercode, cw.is_day)
 
     return {
       city,
