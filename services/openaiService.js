@@ -8,22 +8,22 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
 const CACHE_DIR = './cache'
 
-function loadCache (mode = 'passage') {
-  const CACHE_FILE = `${CACHE_DIR}/${mode}.txt`
+function loadCache (type = 'passage') {
+  const CACHE_FILE = `${CACHE_DIR}/${type}.txt`
   if (fs.existsSync(CACHE_FILE)) {
     return fs.readFileSync(CACHE_FILE, 'utf-8')
   }
   return null
 }
 
-function saveCache (text, mode = 'passage') {
-  const CACHE_FILE = `${CACHE_DIR}/${mode}.txt`
+function saveCache (text, type = 'passage') {
+  const CACHE_FILE = `${CACHE_DIR}/${type}.txt`
   fs.writeFileSync(CACHE_FILE, text, 'utf-8')
 }
 
-export async function generateText (prompt, mode, refresh) {
+export async function generateText (prompt, type, refresh) {
   if (!refresh) {
-    const cachedData = loadCache(mode)
+    const cachedData = loadCache(type)
     if (cachedData) return cachedData
   }
 
@@ -42,7 +42,7 @@ export async function generateText (prompt, mode, refresh) {
   })
 
   const freshData = completion.choices[0].message.content
-  saveCache(freshData, mode)
+  saveCache(freshData, type)
 
   return completion.choices[0].message.content
 }

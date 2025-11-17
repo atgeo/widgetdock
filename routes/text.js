@@ -12,14 +12,14 @@ router.get('/', (req, res) => {
 })
 
 router.post('/generate', async (req, res) => {
-  const { mode, refresh } = req.body
+  const { type, refresh } = req.body
 
   try {
-    const prompt = (mode === 'dialogue'
+    const prompt = (type === 'dialogue'
       ? process.env.PROMPT_DIALOGUE
       : process.env.PROMPT_PASSAGE)
 
-    const result = await generateText(prompt, mode, refresh)
+    const result = await generateText(prompt, type, refresh)
     res.json({ result })
   } catch (err) {
     res.status(500).json({ error: err.message })

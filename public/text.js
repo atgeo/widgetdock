@@ -1,14 +1,14 @@
 async function loadText (refresh = false) {
   try {
     const params = new URLSearchParams(window.location.search)
-    const mode = params.get('mode') || 'passage'
+    const type = params.get('type') || 'passage'
     const res = await fetch('/text/generate', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        mode: mode,
+        type: type,
         refresh: refresh,
       }),
     })
