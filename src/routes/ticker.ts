@@ -4,6 +4,9 @@ import path from 'path'
 import {fileURLToPath} from 'url'
 import {getWeatherForCities} from '../services/weatherService.js'
 import {getNews} from '../services/newsService.js'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const router = express.Router()
 const __filename = fileURLToPath(import.meta.url)
@@ -22,7 +25,7 @@ router.post('/fetch', async (req: Request, res: Response) => {
         if (type === 'news') {
             items = await getNews()
         } else {
-            const cities = ['Miami', 'Toronto', 'Paris', 'Beirut', 'Nairobi', 'Dubai', 'New Delhi', 'Jakarta', 'Singapore', 'Tokyo', 'Sydney']
+            const cities = (process.env.WEATHER_CITIES || '').split(',')
 
             const results = await getWeatherForCities(cities)
 
