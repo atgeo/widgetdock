@@ -16,7 +16,11 @@ async function loadQuiz(refresh = false) {
       console.error(`HTTP error! status: ${res.status}`)
     }
     const data = await res.json()
-    document.getElementById('quiz').innerHTML = data.result
+
+    const result = JSON.parse(data.result)
+
+    document.getElementById('word').textContent = result.word
+    document.getElementById('options').textContent = result.options.join(' ')
   } catch (err) {
     console.error('Error fetching text:', err)
     document.getElementById('quiz').textContent = 'Failed to load text.'

@@ -12,17 +12,19 @@ router.get('/', (_req: Request, res: Response) => {
 })
 
 router.post('/generate', async (req: Request, res: Response) => {
+    const allowedTypes = ['passage', 'dialogue']
     const {type, refresh} = req.body
+    const sanitizedType = allowedTypes.includes(type) ? type : 'passage'
 
     try {
-        const prompt = (type === 'dialogue' ? process.env.PROMPT_DIALOGUE : process.env.PROMPT_PASSAGE)
+        const prompt = (sanitizedType === 'dialogue' ? process.env.PROMPT_DIALOGUE : process.env.PROMPT_PASSAGE)
 
         if (!prompt) {
             res.status(500).json({ error: "Prompt missing" })
             return
         }
 
-        const result = await generateText(prompt, type, refresh)
+        const result = await generateText(prompt, sanitizedType, refresh)
         res.json({result})
     } catch (err) {
         const message = err instanceof Error ? err.message : 'Unknown error'

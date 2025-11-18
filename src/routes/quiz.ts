@@ -12,7 +12,9 @@ router.get('/', (_req: Request, res: Response) => {
 })
 
 router.post('/fetch', async (req: Request, res: Response) => {
+    const allowedTypes = ['synonyms']
     const {type, refresh} = req.body
+    const sanitizedType = allowedTypes.includes(type) ? type : 'synonyms'
 
     try {
         const prompt = process.env.PROMPT_QUIZ_SYNONYMS
@@ -22,7 +24,7 @@ router.post('/fetch', async (req: Request, res: Response) => {
             return
         }
 
-        const result = await generateText(prompt, type, refresh)
+        const result = await generateText(prompt, sanitizedType, refresh)
         res.json({result})
     } catch (err) {
         const message = err instanceof Error ? err.message : 'Unknown error'
