@@ -9,7 +9,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 router.get('/', (_req: Request, res: Response) => {
-    res.sendFile(path.join(__dirname, '../../templates', 'text.html'))
+    res.sendFile(path.join(__dirname, '../../views', 'text.html'))
 })
 
 router.post('/generate', async (req: Request, res: Response) => {

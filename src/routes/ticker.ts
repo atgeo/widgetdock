@@ -13,7 +13,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 router.get('/', (_req: Request, res: Response) => {
-    res.sendFile(path.join(__dirname, '../../templates', 'ticker.html'))
+    res.sendFile(path.join(__dirname, '../../views', 'ticker.html'))
 })
 
 router.post('/fetch', async (req: Request, res: Response) => {
