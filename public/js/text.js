@@ -12,12 +12,14 @@ async function loadText (refresh = false) {
         refresh: refresh,
       }),
     })
-    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`)
+    if (!res.ok) {
+      console.error(`HTTP error! status: ${res.status}`)
+    }
     const data = await res.json()
     document.getElementById('reader').innerHTML = parseText(data.result)
   } catch (err) {
-    console.error('Error fetching dialogue:', err)
-    document.getElementById('dialogue').textContent = 'Failed to load dialogue.'
+    console.error('Error fetching text:', err)
+    document.getElementById('reader').textContent = 'Failed to load text.'
   }
 }
 
