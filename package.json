@@ -6,7 +6,8 @@
   "main": "public/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "build": "npx tsc",
+    "start": "node dist/server.js"
   },
   "private": true,
   "dependencies": {
@@ -15,5 +16,12 @@
     "express": "^5.1.0",
     "openai": "^6.9.0",
     "ws": "^8.18.3"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.5",
+    "@types/node": "^24.10.1",
+    "nodemon": "^3.1.11",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   }
 }

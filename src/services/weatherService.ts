@@ -1,4 +1,11 @@
-const weatherCodeMap = {
+type WeatherIcon = string | { 0: string; 1: string }
+
+interface WeatherInfo {
+    text: string
+    icon: WeatherIcon
+}
+
+const weatherCodeMap: Record<number, WeatherInfo> = {
   0: { text: 'Clear sky', icon: { 0: '🌙', 1: '☀️' } },
   1: { text: 'Mainly clear', icon: { 0: '🌙', 1: '🌤️' } },
   2: { text: 'Partly cloudy', icon: { 0: '☁️', 1: '⛅' } },
@@ -39,21 +46,22 @@ const weatherCodeMap = {
   99: { text: 'Thunderstorm + heavy hail', icon: '⛈️' },
 }
 
-function getConditions (code, is_day) {
+function getConditions (code: number, is_day: number) {
   const data = weatherCodeMap[code] || { text: 'Unknown', icon: '❓' }
 
   let icon
 
-  if (typeof data.icon === 'object') {
-    icon = data.icon[is_day] ?? '❓'
-  } else {
-    icon = data.icon
-  }
+    if (typeof data.icon === 'object' && data.icon !== null) {
+        const key = is_day ? 1 : 0
+        icon = data.icon[key] ?? '❓'
+    } else {
+        icon = data.icon ?? '❓'
+    }
 
   return { text: data.text || 'Unknown', icon }
 }
 
-async function getCoordinates (city) {
+async function getCoordinates (city: string) {
   const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}`
   const res = await fetch(url)
   const data = await res.json()
@@ -66,7 +74,7 @@ async function getCoordinates (city) {
   return { latitude, longitude }
 }
 
-async function getWeather (city) {
+async function getWeather (city: string) {
   try {
     const { latitude, longitude } = await getCoordinates(city)
 
@@ -89,7 +97,7 @@ async function getWeather (city) {
   }
 }
 
-export async function getWeatherForCities (cities) {
+export async function getWeatherForCities (cities: string[]) {
   const promises = cities.map(getWeather)
   return Promise.all(promises)
 }

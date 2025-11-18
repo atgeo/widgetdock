@@ -6,6 +6,12 @@ dotenv.config()
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
+if (!process.env.OPENAI_MODEL) {
+    throw new Error("MODEL environment variable is required")
+}
+
+const model = process.env.OPENAI_MODEL
+
 const CACHE_DIR = './cache'
 
 function loadCache (type = 'passage') {
@@ -16,12 +22,12 @@ function loadCache (type = 'passage') {
   return null
 }
 
-function saveCache (text, type = 'passage') {
+function saveCache (text: string, type = 'passage') {
   const CACHE_FILE = `${CACHE_DIR}/${type}.txt`
   fs.writeFileSync(CACHE_FILE, text, 'utf-8')
 }
 
-export async function generateText (prompt, type, refresh) {
+export async function generateText (prompt: string, type: string, refresh: boolean) {
   if (!refresh) {
     const cachedData = loadCache(type)
     if (cachedData) return cachedData
@@ -38,11 +44,11 @@ export async function generateText (prompt, type, refresh) {
         content: prompt,
       },
     ],
-    model: process.env.MODEL,
+    model: model,
   })
 
-  const freshData = completion.choices[0].message.content
+  const freshData = completion.choices?.[0]?.message.content || 'No content returned'
   saveCache(freshData, type)
 
-  return completion.choices[0].message.content
+  return freshData
 }

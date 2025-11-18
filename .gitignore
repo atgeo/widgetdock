@@ -1,4 +1,15 @@
-node_modules
-.idea
+# Dependencies
+node_modules/
+
+# Editor  & OS files
+.idea/
+.DS_Store
+
+# Environment
 .env
+
+#Local cache files
 cache/*
+
+# Build output
+dist/
