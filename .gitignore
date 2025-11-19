@@ -13,3 +13,5 @@ cache/*
 
 # Build output
 dist/
+
+public/css/

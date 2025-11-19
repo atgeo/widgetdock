@@ -14,15 +14,16 @@
         <div class="p-4 rounded-2xl border border-gray-200 bg-white shadow-sm space-y-4">
             <p class="text-lg font-semibold text-gray-800">
                 Word: <span x-text="item.word"></span>
-            </p>
 
-            <button
-                    @click="playPhonetic(item.word)"
-                    class="ml-2 text-blue-600 hover:text-blue-800 text-xl"
-                    title="Play pronunciation"
-            >
-                🔊
-            </button>
+
+                <button
+                        @click="playPhonetic(item.word)"
+                        class="ml-2 p-2 hover:bg-gray-100 active:bg-gray-200"
+                        title="Play pronunciation"
+                >
+                    <span>🔊</span>
+                </button>
+            </p>
 
             <!-- Options -->
             <div class="space-y-3">
