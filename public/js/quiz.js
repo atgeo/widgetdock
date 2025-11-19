@@ -49,6 +49,19 @@ function quizWidget () {
       item.feedback = optionIdx === item.correctIndex ? '✅ Correct!' : '❌ Wrong!'
     },
 
+    playPhonetic (word) {
+      fetch('/quiz/phonetic', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ word }),
+      }).then(res => res.json()).then(data => {
+        if (!data.result) return
+
+        const audio = new Audio(data.result)
+        audio.play()
+      }).catch(err => console.error('Error fetching phonetic:', err))
+    },
+
     init () {
       this.loadQuiz()
     },

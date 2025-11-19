@@ -21,7 +21,7 @@ export async function fetchPhonetic(word: string) {
     }
 
     const data: DictionaryEntry[] = await res.json()
-    console.log(data)
+
     const entry = data[0]
 
     if (!entry?.phonetics?.length) return null

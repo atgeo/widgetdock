@@ -16,6 +16,14 @@
                 Word: <span x-text="item.word"></span>
             </p>
 
+            <button
+                    @click="playPhonetic(item.word)"
+                    class="ml-2 text-blue-600 hover:text-blue-800 text-xl"
+                    title="Play pronunciation"
+            >
+                🔊
+            </button>
+
             <!-- Options -->
             <div class="space-y-3">
                 <template x-for="(opt, i) in item.options" :key="i">
