@@ -1,6 +1,6 @@
 function quizWidget () {
   return {
-    quiz: { word: '', options: [] },
+    quiz: null,
     feedback: '',
     correctIndex: 0,
 
