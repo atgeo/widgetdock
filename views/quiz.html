@@ -6,11 +6,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap" rel="stylesheet">
     <link rel="icon" href="/icons/favicon.png" type="image/png">
     <link rel="stylesheet" href="/css/quiz.css"/>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body>
-<div id="quiz">
-    <p id="word"></p>
-    <div id="options"></div>
+<div x-data="quizWidget()" class="quiz">
+    <template x-for="(item, idx) in quiz" :key="idx">
+        <div>
+            <p>Word: <span x-text="item.word"></span></p>
+            <template x-for="(opt, i) in item.options" :key="i">
+                <button @click="checkAnswer(idx, i)" x-text="opt"></button>
+            </template>
+
+            <p x-text="item.feedback"></p>
+        </div>
+    </template>
 </div>
 <script src="/js/quiz.js"></script>
 </body>
