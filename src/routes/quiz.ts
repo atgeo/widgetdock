@@ -13,12 +13,12 @@ router.get('/', (_req: Request, res: Response) => {
 })
 
 router.post('/fetch', async (req: Request, res: Response) => {
-    const allowedTypes = ['synonyms']
+    const allowedTypes = ['synonyms', 'synonyms_beginner']
     const {type, refresh} = req.body
     const sanitizedType = allowedTypes.includes(type) ? type : 'synonyms'
 
     try {
-        const prompt = process.env.PROMPT_QUIZ_SYNONYMS
+        const prompt = (sanitizedType === 'synonyms_beginner' ? process.env.PROMPT_QUIZ_SYNONYMS_BEGINNER : process.env.PROMPT_QUIZ_SYNONYMS)
 
         if (!prompt) {
             res.status(500).json({error: "Prompt missing"})
