@@ -2,6 +2,7 @@ import express, {type Request, type Response} from 'express'
 import {generateText} from '../services/openaiService.js'
 import path from 'path'
 import {fileURLToPath} from 'url'
+import {fetchDefinition} from '../services/dictionaryService.js'
 
 const router = express.Router()
 const __filename = fileURLToPath(import.meta.url)
@@ -30,6 +31,12 @@ router.post('/fetch', async (req: Request, res: Response) => {
         const message = err instanceof Error ? err.message : 'Unknown error'
         res.status(500).json({error: message})
     }
+})
+
+router.post('/pronunciation', async (req: Request, res: Response) => {
+    const {word} = req.body
+    const result = await fetchDefinition(word)
+    res.json({result})
 })
 
 export default router
