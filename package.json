@@ -6,20 +6,27 @@
   "main": "public/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx tsc",
-    "start": "node dist/server.js"
+    "build": "npm run build:ts && npm run build:css",
+    "build:ts": "tsc",
+    "start": "node dist/server.js",
+    "dev:css": "postcss src/styles/*.css --dir public/css --watch",
+    "build:css": "NODE_ENV=production postcss src/styles/*.css -d public/css"
   },
   "private": true,
   "dependencies": {
+    "@tailwindcss/postcss": "^4.1.17",
     "country-emoji": "^1.5.6",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
-    "openai": "^6.9.0"
+    "openai": "^6.9.0",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.17"
   },
   "devDependencies": {
     "@types/express": "^5.0.5",
     "@types/node": "^24.10.1",
     "nodemon": "^3.1.11",
+    "postcss-cli": "^11.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   }
