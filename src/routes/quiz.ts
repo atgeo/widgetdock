@@ -2,7 +2,7 @@ import express, {type Request, type Response} from 'express'
 import {generateText} from '../services/openaiService.js'
 import path from 'path'
 import {fileURLToPath} from 'url'
-import {fetchDefinition} from '../services/dictionaryService.js'
+import {fetchPhonetic} from '../services/dictionaryService.js'
 
 const router = express.Router()
 const __filename = fileURLToPath(import.meta.url)
@@ -21,7 +21,7 @@ router.post('/fetch', async (req: Request, res: Response) => {
         const prompt = process.env.PROMPT_QUIZ_SYNONYMS
 
         if (!prompt) {
-            res.status(500).json({ error: "Prompt missing" })
+            res.status(500).json({error: "Prompt missing"})
             return
         }
 
@@ -33,9 +33,9 @@ router.post('/fetch', async (req: Request, res: Response) => {
     }
 })
 
-router.post('/pronunciation', async (req: Request, res: Response) => {
+router.post('/phonetic', async (req: Request, res: Response) => {
     const {word} = req.body
-    const result = await fetchDefinition(word)
+    const result = await fetchPhonetic(word)
     res.json({result})
 })
 
