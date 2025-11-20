@@ -13,7 +13,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run build:ts && npm run build:css",
     "build:ts": "tsc",
-    "start": "node --env-file:.env dist/server.js",
     "dev": "nodemon --env-file=.env dist/server.js",
     "dev:css": "postcss src/styles/*.css --dir public/css --watch",
     "build:css": "NODE_ENV=production postcss src/styles/*.css -d public/css",
