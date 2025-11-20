@@ -26,12 +26,14 @@ router.post('/fetch', async (req: Request, res: Response) => {
 
             const results = await getWeatherForCities(cities)
 
-            items = results.filter(r => !r.error).map(r => ({
-                    city: r.city,
-                    temperature: Math.round(r.temperature),
-                    desc: r.desc,
-                }),
-            )
+            items = results
+                .filter((r): r is NonNullable<typeof r> => r !== undefined)
+                .map(r => ({
+                        city: r.city,
+                        temperature: Math.round(r.temperature),
+                        desc: r.desc,
+                    }),
+                )
         }
 
         return res.json({items})

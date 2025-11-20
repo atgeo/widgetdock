@@ -1,11 +1,4 @@
-import {
-    pgTable,
-    serial, text,
-    integer,
-    timestamp,
-    doublePrecision,
-    unique
-} from 'drizzle-orm/pg-core'
+import {pgTable, serial, text, integer, timestamp, doublePrecision, unique, boolean} from 'drizzle-orm/pg-core'
 
 export const weather = pgTable('weather', {
     id: serial('id').primaryKey(),
@@ -15,11 +8,14 @@ export const weather = pgTable('weather', {
     city: text('city').notNull(),
 
     temperature: doublePrecision('temperature').notNull(),
-    condition: text('condition').notNull(),
+    weather_code: integer('weather_code').notNull(),
+    is_day: boolean('is_day').notNull(),
 
     createdAt: timestamp('created_at', {withTimezone: true})
         .defaultNow()
         .notNull(),
-}, (table) => ({
-    uniqueLocation: unique('unique_location').on(table.latitude, table.longitude)
-}))
+    },
+    (t) => [
+        unique('unique_location').on(t.latitude, t.longitude),
+    ],
+)

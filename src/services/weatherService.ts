@@ -1,3 +1,4 @@
+import {eq} from 'drizzle-orm'
 import {db} from '../db.js'
 import {weather} from '../schema.js'
 
@@ -49,7 +50,7 @@ const weatherCodeMap: Record<number, WeatherInfo> = {
     99: {text: 'Thunderstorm + heavy hail', icon: '⛈️'},
 }
 
-function getConditions(code: number, is_day: number) {
+function getConditions(code: number, is_day: boolean) {
     const data = weatherCodeMap[code] || {text: 'Unknown', icon: '❓'}
 
     let icon
@@ -73,13 +74,20 @@ async function getCoordinates(city: string) {
         throw new Error(`City not found: ${city}`)
     }
 
-    const {latitude, longitude} = data.results[0]
+    const latitude = Number(data.results[0].latitude)
+    const longitude = Number(data.results[0].longitude)
+
     return {latitude, longitude}
 }
 
-async function getWeather(city: string) {
+async function updateWeatherFromAPI(city: string, latitude?: number, longitude?: number) {
     try {
-        const {latitude, longitude} = await getCoordinates(city)
+        // Only call geocoding API if coordinates are missing
+        if (latitude == null || longitude == null) {
+            const coords = await getCoordinates(city)
+            latitude = coords.latitude
+            longitude = coords.longitude
+        }
 
         const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`
         const res = await fetch(url)
@@ -93,7 +101,8 @@ async function getWeather(city: string) {
             latitude,
             longitude,
             temperature: cw.temperature,
-            condition: desc.text
+            weather_code: cw.weathercode,
+            is_day: cw.is_day,
         }
 
         await db
@@ -103,7 +112,7 @@ async function getWeather(city: string) {
                 target: [weather.latitude, weather.longitude],
                 set: {
                     temperature: record.temperature,
-                    condition: record.condition,
+                    weather_code: record.weather_code,
                     createdAt: new Date()
                 }
             })
@@ -111,12 +120,46 @@ async function getWeather(city: string) {
         return {
             city,
             temperature: cw.temperature,
-            code: cw.weathercode,
             desc,
         }
     } catch (err) {
         console.error(err)
-        return {city, error: true}
+        return undefined
+    }
+}
+
+async function getWeather(city: string) {
+    try {
+        const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000)
+
+        const dbCity = await db
+            .select()
+            .from(weather)
+            .where(eq(weather.city, city))
+            .limit(1)
+
+        if (dbCity.length) {
+            const [record] = dbCity
+            if (record) {
+                if (record.createdAt >= oneHourAgo) {
+                    const desc = getConditions(record.weather_code, record.is_day)
+                    return {
+                        city,
+                        temperature: record.temperature,
+                        desc,
+                    }
+                }
+
+                // Outdated, fetch fresh but reuse coordinates
+                return updateWeatherFromAPI(city, record.latitude, record.longitude)
+            }
+        }
+
+        // Completely new city, no record exists
+        return updateWeatherFromAPI(city)
+    } catch (err) {
+        console.error(err)
+        return undefined
     }
 }
 

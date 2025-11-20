@@ -1,5 +1,5 @@
 {
-  "id": "65a04dcd-dda7-4b51-a37f-5745149f8ad4",
+  "id": "e29e61df-9ab6-4e92-b6eb-9e2419dca046",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -38,9 +38,15 @@
           "primaryKey": false,
           "notNull": true
         },
-        "condition": {
-          "name": "condition",
-          "type": "text",
+        "weather_code": {
+          "name": "weather_code",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "is_day": {
+          "name": "is_day",
+          "type": "boolean",
           "primaryKey": false,
           "notNull": true
         },
