@@ -1,7 +1,4 @@
-import dotenv from 'dotenv'
 import { flag, code, name, countries } from 'country-emoji'
-
-dotenv.config()
 
 interface NewsItem {
     title: string

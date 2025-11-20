@@ -4,9 +4,6 @@ import path from 'path'
 import {fileURLToPath} from 'url'
 import {getWeatherForCities} from '../services/weatherService.js'
 import {getNews} from '../services/newsService.js'
-import dotenv from 'dotenv'
-
-dotenv.config()
 
 const router = express.Router()
 const __filename = fileURLToPath(import.meta.url)

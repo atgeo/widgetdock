@@ -13,8 +13,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run build:ts && npm run build:css",
     "build:ts": "tsc",
-    "start": "node dist/server.js",
-    "dev": "nodemon dist/server.js",
+    "start": "node --env-file:.env dist/server.js",
+    "dev": "nodemon --env-file=.env dist/server.js",
     "dev:css": "postcss src/styles/*.css --dir public/css --watch",
     "build:css": "NODE_ENV=production postcss src/styles/*.css -d public/css"
   },
@@ -22,7 +22,6 @@
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.17",
     "country-emoji": "^1.5.6",
-    "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "openai": "^6.9.0",
     "pg": "^8.16.3",
