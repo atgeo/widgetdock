@@ -1,10 +1,11 @@
-import pkg from 'pg'
+import { drizzle } from 'drizzle-orm/node-postgres'
+import { Client } from 'pg'
 
-const {Pool} = pkg
-
-const pool = new Pool({
+const client = new Client({
     connectionString: process.env.DATABASE_URL,
-    ssl: process.env.NODE_ENV === 'production' ? {rejectUnauthorized: false} : false
+    ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : false
 })
 
-export default pool
+await client.connect()
+
+export const db = drizzle(client)
