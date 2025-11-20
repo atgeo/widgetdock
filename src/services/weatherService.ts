@@ -1,6 +1,6 @@
-import {eq} from 'drizzle-orm'
 import {db} from '../db.js'
 import {weather} from '../schema.js'
+import {eq} from 'drizzle-orm'
 
 type WeatherIcon = string | { 0: string; 1: string }
 

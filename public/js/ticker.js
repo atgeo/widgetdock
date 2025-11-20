@@ -1,8 +1,8 @@
 const tickerEl = document.getElementById('scroll-text')
 
 async function loadTicker () {
-  const params = new URLSearchParams(window.location.search)
-  const type = params.get('type') || 'passage'
+  const segments = window.location.pathname.split('/').filter(Boolean)
+  const type = segments.pop() || 'weather'
 
   try {
     const res = await fetch('/ticker/fetch', {
