@@ -1,9 +1,12 @@
 {
-  "name": "tiktok",
-  "version": "1.0.0",
+  "name": "widgetdock",
+  "version": "0.1.0",
   "type": "module",
-  "description": "",
-  "main": "public/index.js",
+  "description": "A widget toolkit for streaming and webviews",
+  "author": "Georges Kmeid",
+  "keywords": ["widgets"],
+  "license": "UNLICENSED",
+  "main": "dist/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run build:ts && npm run build:css",
