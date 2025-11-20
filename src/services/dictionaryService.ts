@@ -10,7 +10,7 @@ interface DictionaryEntry {
     phonetics: Phonetic[]
 }
 
-const BASE_URL = "https://api.dictionaryapi.dev/api/v2/entries/en"
+const BASE_URL = 'https://api.dictionaryapi.dev/api/v2/entries/en'
 
 export async function fetchPhonetic(word: string) {
     const url = `${BASE_URL}/${encodeURIComponent(word)}`

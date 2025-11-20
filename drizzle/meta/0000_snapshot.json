@@ -1,5 +1,5 @@
 {
-  "id": "26592e63-5565-448b-b8f5-95762bff7b91",
+  "id": "6db6220f-55f1-4993-8010-9099bacdb320",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -8,11 +8,29 @@
       "name": "weather",
       "schema": "",
       "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "lat": {
+          "name": "lat",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "lon": {
+          "name": "lon",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
         "city": {
           "name": "city",
           "type": "text",
-          "primaryKey": true,
-          "notNull": true
+          "primaryKey": false,
+          "notNull": false
         },
         "temperature": {
           "name": "temperature",
@@ -37,7 +55,16 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "unique_location": {
+          "name": "unique_location",
+          "nullsNotDistinct": false,
+          "columns": [
+            "lat",
+            "lon"
+          ]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
