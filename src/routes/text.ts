@@ -21,7 +21,7 @@ router.post('/generate', async (req: Request, res: Response) => {
     try {
         const {prompt} = await getPromptForWidgetOrFail(sanitizedType, 'text')
 
-        const result = await generateText(prompt, sanitizedType, refresh)
+        const result = await generateText(prompt)
         res.json({result})
     } catch (err) {
         const message = err instanceof Error ? err.message : 'Unknown error'

@@ -22,7 +22,7 @@ router.post('/fetch', async (req: Request, res: Response) => {
     try {
         const {prompt} = await getPromptForWidgetOrFail(sanitizedType, 'quiz')
 
-        const result = await generateText(prompt, sanitizedType, refresh)
+        const result = await generateText(prompt)
         res.json({result})
     } catch (err) {
         const message = err instanceof Error ? err.message : 'Unknown error'
