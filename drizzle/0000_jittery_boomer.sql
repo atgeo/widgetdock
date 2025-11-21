@@ -24,7 +24,8 @@ CREATE TABLE "widgets" (
 	"type" varchar(256) NOT NULL,
 	"enabled" boolean DEFAULT true,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
-	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
+	CONSTRAINT "unique_name_type" UNIQUE("name","type")
 );
 --> statement-breakpoint
 ALTER TABLE "prompts" ADD CONSTRAINT "prompts_widget_id_widgets_id_fk" FOREIGN KEY ("widget_id") REFERENCES "public"."widgets"("id") ON DELETE cascade ON UPDATE no action;
