@@ -9,7 +9,7 @@ export const weather = pgTable('weather',
         city: varchar({length: 256}).notNull(),
 
         temperature: doublePrecision('temperature').notNull(),
-        weather_code: integer('weather_code').notNull(),
+        weatherCode: integer('weather_code').notNull(),
         isDay: boolean('is_day').notNull(),
 
         createdAt: timestamp('created_at', {withTimezone: true}).defaultNow().notNull(),
@@ -36,12 +36,39 @@ export const widgets = pgTable('widgets',
 export const prompts = pgTable('prompts', {
     id: serial('id').primaryKey(),
 
-    widget_id: integer('widget_id')
+    widgetId: integer('widget_id')
         .references(() => widgets.id, {onDelete: 'cascade'})
         .notNull(),
 
     prompt: text('prompt').notNull(),
 
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().notNull(),
+})
+
+export const quizQuestions = pgTable("quiz_questions", {
+    id: serial('id').primaryKey(),
+
+    widgetId: integer('widget_id')
+        .references(() => widgets.id, {onDelete: 'cascade'})
+        .notNull(),
+
+    questionText: text('question_text').notNull(),
+
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().notNull(),
+})
+
+export const quizOptions = pgTable("quiz_options", {
+    id: serial('id').primaryKey(),
+
+    questionId: integer('question_id')
+        .references(() => quizQuestions.id)
+        .notNull(),
+
+    optionText: varchar('option_text', {length: 256}).notNull(),
+    isCorrect: boolean('is_correct').default(false).notNull(),
+
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().notNull(),
 })

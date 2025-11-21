@@ -20,7 +20,7 @@ export async function getPromptForWidgetOrFail(name: string, type: string) {
     const [promptRow] = await db
         .select()
         .from(prompts)
-        .where(eq(prompts.widget_id, widget.id))
+        .where(eq(prompts.widgetId, widget.id))
 
     if (!promptRow) {
         throw new Error(`Prompt missing for widget: ${name}`)

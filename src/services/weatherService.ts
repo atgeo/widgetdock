@@ -101,7 +101,7 @@ async function updateWeatherFromAPI(city: string, latitude?: number, longitude?:
             latitude,
             longitude,
             temperature: cw.temperature,
-            weather_code: cw.weathercode,
+            weatherCode: cw.weathercode,
             isDay: cw.is_day,
         }
 
@@ -112,7 +112,7 @@ async function updateWeatherFromAPI(city: string, latitude?: number, longitude?:
                 target: [weather.latitude, weather.longitude],
                 set: {
                     temperature: record.temperature,
-                    weather_code: record.weather_code,
+                    weatherCode: record.weatherCode,
                     createdAt: new Date()
                 }
             })
@@ -142,7 +142,7 @@ async function getWeather(city: string) {
             const [record] = dbCity
             if (record) {
                 if (record.createdAt >= oneHourAgo) {
-                    const desc = getConditions(record.weather_code, record.isDay)
+                    const desc = getConditions(record.weatherCode, record.isDay)
                     return {
                         city,
                         temperature: record.temperature,
