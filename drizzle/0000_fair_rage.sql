@@ -1,3 +1,11 @@
+CREATE TABLE "prompts" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"widget_id" integer NOT NULL,
+	"prompt" text NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE "weather" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"latitude" double precision NOT NULL,
@@ -11,9 +19,11 @@ CREATE TABLE "weather" (
 );
 --> statement-breakpoint
 CREATE TABLE "widgets" (
-	"id" serial NOT NULL,
+	"id" serial PRIMARY KEY NOT NULL,
 	"name" varchar(256),
 	"enabled" boolean DEFAULT true,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
 );
+--> statement-breakpoint
+ALTER TABLE "prompts" ADD CONSTRAINT "prompts_widget_id_widgets_id_fk" FOREIGN KEY ("widget_id") REFERENCES "public"."widgets"("id") ON DELETE cascade ON UPDATE no action;
