@@ -3,6 +3,9 @@ import {generateText} from '../services/openaiService.js'
 import path from 'path'
 import {fileURLToPath} from 'url'
 import {checkWidgetEnabled} from '../middleware/checkWidgetEnabled.js'
+import {db} from '../db/db.js'
+import {widgets, prompts} from '../db/schema.js'
+import {and, eq} from 'drizzle-orm'
 
 const router = express.Router()
 const __filename = fileURLToPath(import.meta.url)
@@ -18,14 +21,25 @@ router.post('/generate', async (req: Request, res: Response) => {
     const sanitizedType = allowedTypes.includes(type) ? type : 'passage'
 
     try {
-        const prompt = (sanitizedType === 'dialogue' ? process.env.PROMPT_DIALOGUE : process.env.PROMPT_PASSAGE)
+        const [widget] = await db
+            .select()
+            .from(widgets)
+            .where(and(eq(widgets.name, sanitizedType), eq(widgets.type, 'text')))
 
-        if (!prompt) {
-            res.status(500).json({ error: "Prompt missing" })
-            return
+        if (!widget) {
+            return res.status(404).json({ error: "Widget not found" })
         }
 
-        const result = await generateText(prompt, sanitizedType, refresh)
+        const [promptRow] = await db
+            .select()
+            .from(prompts)
+            .where(eq(prompts.widget_id, widget.id))
+
+        if (!promptRow) {
+            return res.status(500).json({ error: "Prompt missing in database" })
+        }
+
+        const result = await generateText(promptRow.prompt, sanitizedType, refresh)
         res.json({result})
     } catch (err) {
         const message = err instanceof Error ? err.message : 'Unknown error'

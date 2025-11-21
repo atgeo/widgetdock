@@ -1,7 +1,7 @@
 async function loadText (refresh = false) {
   try {
-    const params = new URLSearchParams(window.location.search)
-    const type = params.get('type') || 'passage'
+    const segments = window.location.pathname.split('/').filter(Boolean)
+    const type = segments.pop() || 'passage'
     const res = await fetch('/text/generate', {
       method: 'POST',
       headers: {

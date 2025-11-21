@@ -6,9 +6,8 @@ function quizWidget () {
 
     async loadQuiz (refresh = false) {
       try {
-
-        const params = new URLSearchParams(window.location.search)
-        const type = params.get('type') || 'synonyms'
+        const segments = window.location.pathname.split('/').filter(Boolean)
+        const type = segments.pop() || 'synonyms'
 
         const res = await fetch('/quiz/fetch', {
           method: 'POST',
