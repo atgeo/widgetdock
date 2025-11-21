@@ -20,7 +20,8 @@ CREATE TABLE "weather" (
 --> statement-breakpoint
 CREATE TABLE "widgets" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"name" varchar(256),
+	"name" varchar(256) NOT NULL,
+	"type" varchar(256) NOT NULL,
 	"enabled" boolean DEFAULT true,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL

@@ -17,7 +17,8 @@
     "dev:css": "postcss src/styles/*.css --dir public/css --watch",
     "build:css": "NODE_ENV=production postcss src/styles/*.css -d public/css",
     "drizzle:generate": "drizzle-kit generate",
-    "drizzle-migrate": "drizzle-kit migrate"
+    "drizzle-migrate": "drizzle-kit migrate",
+    "db:seed": "tsx --env-file=.env src/db/seed.ts"
   },
   "private": true,
   "dependencies": {

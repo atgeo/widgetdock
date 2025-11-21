@@ -21,7 +21,8 @@ export const weather = pgTable('weather',
 export const widgets = pgTable('widgets', {
     id: serial('id').primaryKey(),
 
-    name: varchar({length: 256}),
+    name: varchar({length: 256}).notNull(),
+    type: varchar({length: 256}).notNull(),
     enabled: boolean().default(true),
 
     createdAt: timestamp('created_at', {withTimezone: true}).defaultNow().notNull(),

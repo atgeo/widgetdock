@@ -1,6 +1,6 @@
 import type {Request, Response, NextFunction} from 'express'
-import {db} from '../db.js'
-import {widgets} from '../schema.js'
+import {db} from '../db/db.js'
+import {widgets} from '../db/schema.js'
 import {eq} from "drizzle-orm"
 
 export async function checkWidgetEnabled(req: Request, res: Response, next: NextFunction) {

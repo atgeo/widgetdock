@@ -1,5 +1,5 @@
-import {db} from '../db.js'
-import {weather} from '../schema.js'
+import {db} from '../db/db.js'
+import {weather} from '../db/schema.js'
 import {eq} from 'drizzle-orm'
 
 type WeatherIcon = string | { 0: string; 1: string }
