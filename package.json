@@ -13,7 +13,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run build:ts && npm run build:css",
     "build:ts": "tsc",
-    "dev": "nodemon --env-file=.env dist/server.js",
+    "dev": "tsx watch --env-file=.env src/server.ts",
     "dev:css": "postcss src/styles/*.css --dir public/css --watch",
     "build:css": "NODE_ENV=production postcss src/styles/*.css -d public/css",
     "drizzle:generate": "drizzle-kit generate",
@@ -35,9 +35,8 @@
     "@types/node": "^24.10.1",
     "@types/pg": "^8.15.6",
     "drizzle-kit": "^0.31.7",
-    "nodemon": "^3.1.11",
     "postcss-cli": "^11.0.1",
-    "ts-node": "^10.9.2",
+    "tsx": "^4.20.6",
     "typescript": "^5.9.3"
   }
 }
