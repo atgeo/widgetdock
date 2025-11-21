@@ -11,13 +11,12 @@ export async function getPromptForWidgetOrFail(name: string, type: string) {
                 eq(widgets.name, name),
                 eq(widgets.type, type)
             )
-        );
+        )
 
     if (!widget) {
         throw new Error(`Widget not found: ${name} (${type})`)
     }
 
-    // 2. Find prompt
     const [promptRow] = await db
         .select()
         .from(prompts)
