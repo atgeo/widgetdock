@@ -2,12 +2,13 @@ import express, {type Request, type Response} from 'express'
 import {generateText} from '../services/openaiService.js'
 import path from 'path'
 import {fileURLToPath} from 'url'
+import {checkWidgetEnabled} from '../middleware/checkWidgetEnabled.js'
 
 const router = express.Router()
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-router.get('/', (_req: Request, res: Response) => {
+router.get('/:name', checkWidgetEnabled, (_req: Request, res: Response) => {
     res.sendFile(path.join(__dirname, '../../views', 'text.html'))
 })
 

@@ -4,7 +4,7 @@ import path from 'path'
 import {fileURLToPath} from 'url'
 import {getWeatherForCities} from '../services/weatherService.js'
 import {getNews} from '../services/newsService.js'
-import {checkWidgetEnabled} from "../middleware/checkWidgetEnabled.js"
+import {checkWidgetEnabled} from '../middleware/checkWidgetEnabled.js'
 
 const router = express.Router()
 const __filename = fileURLToPath(import.meta.url)

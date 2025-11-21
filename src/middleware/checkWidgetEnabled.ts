@@ -5,7 +5,6 @@ import {eq} from "drizzle-orm"
 
 export async function checkWidgetEnabled(req: Request, res: Response, next: NextFunction) {
     const widgetName = req.params.name
-    console.log(`Checking widget ${widgetName}`)
 
     if (!widgetName) {
         return res.status(400).send('Widget name is required')
