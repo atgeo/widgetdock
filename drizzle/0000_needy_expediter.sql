@@ -13,5 +13,7 @@ CREATE TABLE "weather" (
 CREATE TABLE "widgets" (
 	"id" serial NOT NULL,
 	"name" varchar(256),
-	"enabled" boolean DEFAULT true
+	"enabled" boolean DEFAULT true,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
 );

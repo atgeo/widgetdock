@@ -50,13 +50,13 @@ const weatherCodeMap: Record<number, WeatherInfo> = {
     99: {text: 'Thunderstorm + heavy hail', icon: '⛈️'},
 }
 
-function getConditions(code: number, is_day: boolean) {
+function getConditions(code: number, isDay: boolean) {
     const data = weatherCodeMap[code] || {text: 'Unknown', icon: '❓'}
 
     let icon
 
     if (typeof data.icon === 'object' && data.icon !== null) {
-        const key = is_day ? 1 : 0
+        const key = isDay ? 1 : 0
         icon = data.icon[key] ?? '❓'
     } else {
         icon = data.icon ?? '❓'
@@ -102,7 +102,7 @@ async function updateWeatherFromAPI(city: string, latitude?: number, longitude?:
             longitude,
             temperature: cw.temperature,
             weather_code: cw.weathercode,
-            is_day: cw.is_day,
+            isDay: cw.is_day,
         }
 
         await db
@@ -142,7 +142,7 @@ async function getWeather(city: string) {
             const [record] = dbCity
             if (record) {
                 if (record.createdAt >= oneHourAgo) {
-                    const desc = getConditions(record.weather_code, record.is_day)
+                    const desc = getConditions(record.weather_code, record.isDay)
                     return {
                         city,
                         temperature: record.temperature,

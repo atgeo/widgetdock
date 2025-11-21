@@ -10,7 +10,7 @@ export const weather = pgTable('weather',
 
         temperature: doublePrecision('temperature').notNull(),
         weather_code: integer('weather_code').notNull(),
-        is_day: boolean('is_day').notNull(),
+        isDay: boolean('is_day').notNull(),
 
         createdAt: timestamp('created_at', {withTimezone: true})
             .defaultNow()
@@ -25,4 +25,12 @@ export const widgets = pgTable('widgets', {
 
     name: varchar({length: 256}),
     enabled: boolean().default(true),
+
+    createdAt: timestamp('created_at', {withTimezone: true})
+        .defaultNow()
+        .notNull(),
+
+    updatedAt: timestamp('updated_at', {withTimezone: true})
+        .defaultNow()
+        .notNull(),
 })
