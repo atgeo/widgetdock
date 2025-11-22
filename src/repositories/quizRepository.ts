@@ -3,7 +3,7 @@ import {quizOptions, quizQuestions} from '../db/schema.js'
 import {eq, inArray} from 'drizzle-orm'
 import type {QuestionWithOptions, QuizOption} from '../types/quiz.js'
 
-export async function fetchQuestionsByWidgetId(widgetId: number) {
+export async function fetchQuestionsByWidgetId(widgetId: number): Promise<QuestionWithOptions[]> {
     const questions = await db
         .select()
         .from(quizQuestions)
@@ -14,9 +14,14 @@ export async function fetchQuestionsByWidgetId(widgetId: number) {
         .from(quizOptions)
         .where(inArray(quizOptions.questionId, questions.map((q) => q.id)))
 
-    return questions.map((q) => ({
-        ...q,
-        options: options.filter((o) => o.questionId === q.id),
+    return questions.map(q => ({
+        questionText: q.questionText,
+        options: options
+            .filter(o => o.questionId === q.id)
+            .map(o => ({
+                optionText: o.optionText,
+                isCorrect: o.isCorrect,
+            })),
     }))
 }
 
@@ -28,7 +33,7 @@ export async function saveQuestions(widgetId: number, questions: QuestionWithOpt
                 widgetId,
                 questionText: question.questionText,
             })
-            .returning({ id: quizQuestions.id })
+            .returning({id: quizQuestions.id})
 
         if (!insertedQuestion) {
             throw new Error('Failed to insert quiz question')
@@ -36,7 +41,7 @@ export async function saveQuestions(widgetId: number, questions: QuestionWithOpt
 
         const optionsToInsert = question.options.map((opt: QuizOption) => ({
             questionId: insertedQuestion.id,
-            optionText: opt.text,
+            optionText: opt.optionText,
             isCorrect: opt.isCorrect,
         }))
 

@@ -17,7 +17,7 @@ export function parseQuizText(rawText: string): QuestionWithOptions[] {
     return parsed.map((q): QuestionWithOptions => ({
         questionText: q.word,
         options: q.options.map((opt, i) => ({
-            text: opt,
+            optionText: opt,
             isCorrect: i === 0,
         })),
     }))

@@ -19,7 +19,7 @@ router.post('/fetch', async (req: Request, res: Response) => {
     const sanitizedType = allowedTypes.includes(type) ? type : 'synonyms'
 
     try {
-        const result = await getQuestionsForWidget(type)
+        const result = await getQuestionsForWidget(sanitizedType)
         res.json({result})
     } catch (err) {
         const message = err instanceof Error ? err.message : 'Unknown error'

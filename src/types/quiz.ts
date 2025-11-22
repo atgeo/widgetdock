@@ -1,7 +1,7 @@
 export interface QuizOption {
     id?: number
     questionId?: number
-    text: string
+    optionText: string
     isCorrect: boolean
 }
 

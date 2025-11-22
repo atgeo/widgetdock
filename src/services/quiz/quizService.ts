@@ -16,7 +16,7 @@ export async function getQuestionsForWidget(widgetName: string) {
         throw new Error(`Widget not found: ${widgetName}`)
     }
 
-    let questions = await fetchQuestionsByWidgetId(widget.id)
+    let questions: QuestionWithOptions[] = await fetchQuestionsByWidgetId(widget.id)
 
     if (!questions || !questions.length) {
         // Fetch prompt for AI generation
@@ -29,7 +29,7 @@ export async function getQuestionsForWidget(widgetName: string) {
 
         const rawText = await generateText(promptRow.prompt)
 
-        const questions: QuestionWithOptions[] = parseQuizText(rawText)
+        questions = parseQuizText(rawText)
 
         await saveQuestions(widget.id, questions)
     }
