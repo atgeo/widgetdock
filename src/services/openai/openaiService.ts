@@ -3,7 +3,7 @@ import OpenAI from 'openai'
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
 if (!process.env.OPENAI_MODEL) {
-    throw new Error("MODEL environment variable is required")
+    throw new Error('MODEL environment variable is required')
 }
 
 const model = process.env.OPENAI_MODEL

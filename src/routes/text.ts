@@ -1,9 +1,7 @@
 import express, {type Request, type Response} from 'express'
-import {generateText} from '../services/openai/openaiService.js'
 import path from 'path'
 import {fileURLToPath} from 'url'
 import {checkWidgetEnabled} from '../middleware/checkWidgetEnabled.js'
-import {getPromptForWidgetOrFail} from '../services/promptService.js'
 import {getTextForWidget} from '../services/text/textService.js'
 
 const router = express.Router()

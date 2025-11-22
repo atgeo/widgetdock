@@ -1,7 +1,7 @@
 import type {Request, Response, NextFunction} from 'express'
 import {db} from '../db/db.js'
 import {widgets} from '../db/schema.js'
-import {eq} from "drizzle-orm"
+import {eq} from 'drizzle-orm'
 
 export async function checkWidgetEnabled(req: Request, res: Response, next: NextFunction) {
     const widgetName = req.params.name

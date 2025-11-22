@@ -1,8 +1,8 @@
 import {db} from '../../db/db.js'
 import {widgets, widgetTexts} from '../../db/schema.js'
 import {and, eq} from 'drizzle-orm'
-import {getPromptForWidgetOrFail} from "../promptService.js";
-import {generateText} from "../openai/openaiService.js";
+import {getPromptForWidgetOrFail} from '../promptService.js'
+import {generateText} from '../openai/openaiService.js'
 
 export async function getTextForWidget(widgetName: string) {
     const [widget] = await db

@@ -46,7 +46,7 @@ export const prompts = pgTable('prompts', {
     updatedAt: timestamp('updated_at').defaultNow().notNull(),
 })
 
-export const quizQuestions = pgTable("quiz_questions", {
+export const quizQuestions = pgTable('quiz_questions', {
     id: serial('id').primaryKey(),
 
     widgetId: integer('widget_id')
@@ -59,7 +59,7 @@ export const quizQuestions = pgTable("quiz_questions", {
     updatedAt: timestamp('updated_at').defaultNow().notNull(),
 })
 
-export const quizOptions = pgTable("quiz_options", {
+export const quizOptions = pgTable('quiz_options', {
     id: serial('id').primaryKey(),
 
     questionId: integer('question_id')
@@ -73,7 +73,7 @@ export const quizOptions = pgTable("quiz_options", {
     updatedAt: timestamp('updated_at').defaultNow().notNull(),
 })
 
-export const widgetTexts = pgTable("widget_texts", {
+export const widgetTexts = pgTable('widget_texts', {
     id: serial('id').primaryKey(),
 
     widgetId: integer('widget_id')

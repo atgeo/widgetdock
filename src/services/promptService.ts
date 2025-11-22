@@ -1,6 +1,6 @@
 import {db} from '../db/db.js'
 import {widgets, prompts} from '../db/schema.js'
-import {eq, and} from "drizzle-orm"
+import {eq, and} from 'drizzle-orm'
 
 export async function getPromptForWidgetOrFail(name: string, type: string) {
     const [widget] = await db
