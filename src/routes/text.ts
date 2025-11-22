@@ -4,6 +4,7 @@ import path from 'path'
 import {fileURLToPath} from 'url'
 import {checkWidgetEnabled} from '../middleware/checkWidgetEnabled.js'
 import {getPromptForWidgetOrFail} from '../services/promptService.js'
+import {getTextForWidget} from '../services/text/textService.js'
 
 const router = express.Router()
 const __filename = fileURLToPath(import.meta.url)
@@ -19,9 +20,7 @@ router.post('/generate', async (req: Request, res: Response) => {
     const sanitizedType = allowedTypes.includes(type) ? type : 'passage'
 
     try {
-        const {prompt} = await getPromptForWidgetOrFail(sanitizedType, 'text')
-
-        const result = await generateText(prompt)
+        const result = await getTextForWidget(sanitizedType)
         res.json({result})
     } catch (err) {
         const message = err instanceof Error ? err.message : 'Unknown error'
