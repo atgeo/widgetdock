@@ -1,10 +1,9 @@
 import express, {type Request, type Response} from 'express'
-import {generateText} from '../services/openaiService.js'
 import path from 'path'
 import {fileURLToPath} from 'url'
 import {fetchPhonetic} from '../services/dictionaryService.js'
 import {checkWidgetEnabled} from '../middleware/checkWidgetEnabled.js'
-import {getPromptForWidgetOrFail} from '../services/promptService.js'
+import {getQuestionsForWidget} from '../services/quiz/quizService.js'
 
 const router = express.Router()
 const __filename = fileURLToPath(import.meta.url)
@@ -20,9 +19,7 @@ router.post('/fetch', async (req: Request, res: Response) => {
     const sanitizedType = allowedTypes.includes(type) ? type : 'synonyms'
 
     try {
-        const {prompt} = await getPromptForWidgetOrFail(sanitizedType, 'quiz')
-
-        const result = await generateText(prompt)
+        const result = await getQuestionsForWidget(type)
         res.json({result})
     } catch (err) {
         const message = err instanceof Error ? err.message : 'Unknown error'

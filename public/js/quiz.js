@@ -22,17 +22,14 @@ function quizWidget () {
         }
 
         const data = await res.json()
-        const results = JSON.parse(data.result)
 
-        this.quiz = results.map(item => {
+        this.quiz = data.result.map(item => {
           // shuffle options for this item
-          const shuffled = item.options.map(
-            (opt, i) => ({ opt, isCorrect: i === 0 })).
-            sort(() => Math.random() - 0.5)
+          const shuffled = [...item.options].sort(() => Math.random() - 0.5)
 
           return {
-            word: item.word,
-            options: shuffled.map(o => o.opt),
+            word: item.questionText,
+            options: shuffled.map(o => o.optionText),
             correctIndex: shuffled.findIndex(o => o.isCorrect),
             feedback: ''
           }
