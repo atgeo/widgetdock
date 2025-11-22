@@ -1,5 +1,5 @@
 import {fetchQuestionsByWidgetId, saveQuestions} from '../../repositories/quizRepository.js'
-import {prompts, widgets} from '../../db/schema.js'
+import {widgets} from '../../db/schema.js'
 import {and, eq} from 'drizzle-orm'
 import {db} from '../../db/db.js'
 import {generateText} from '../openai/openaiService.js'
