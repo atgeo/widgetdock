@@ -72,3 +72,16 @@ export const quizOptions = pgTable("quiz_options", {
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at').defaultNow().notNull(),
 })
+
+export const widgetTexts = pgTable("widget_texts", {
+    id: serial('id').primaryKey(),
+
+    widgetId: integer('widget_id')
+        .references(() => widgets.id, {onDelete: 'cascade'})
+        .notNull(),
+
+    content: text('content').notNull(),
+
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().notNull(),
+})
