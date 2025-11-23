@@ -113,6 +113,7 @@ async function updateWeatherFromAPI(city: string, latitude?: number, longitude?:
                 set: {
                     temperature: record.temperature,
                     weatherCode: record.weatherCode,
+                    isDay: record.isDay,
                     createdAt: new Date()
                 }
             })
