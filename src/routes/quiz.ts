@@ -14,7 +14,7 @@ router.get('/:name', checkWidgetEnabled, (_req: Request, res: Response) => {
 })
 
 router.post('/fetch', async (req: Request, res: Response) => {
-    const allowedTypes = ['synonyms', 'synonyms_beginner']
+    const allowedTypes = ['synonyms', 'synonyms_beginner', 'phrasal_verbs']
     const {type, refresh} = req.body
     const sanitizedType = allowedTypes.includes(type) ? type : 'synonyms'
 
