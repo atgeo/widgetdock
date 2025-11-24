@@ -11,7 +11,7 @@ export async function generateQuizQuestions(quizId: number) {
 
     if (!quiz) throw new Error('Quiz not found')
 
-    const [widget] = await db.select().from(widgets).where(eq(widgets.id, quiz.widgetId));
+    const [widget] = await db.select().from(widgets).where(eq(widgets.id, quiz.widgetId))
     if (!widget || widget.type !== 'quiz') throw new Error('Parent widget is not a quiz widget')
 
     const {prompt} = await getPromptForWidgetOrFail(widget.id)
@@ -26,23 +26,23 @@ export async function generateQuizQuestions(quizId: number) {
     })
 }
 
-export async function getQuestionsForWidget(widgetName: string) {
+export async function getQuestionsForWidget(widgetId: number) {
     const [widget] = await db
         .select()
         .from(widgets)
-        .where(and(eq(widgets.slug, widgetName), eq(widgets.type, 'quiz')))
+        .where(and(eq(widgets.id, widgetId), eq(widgets.type, 'quiz')))
 
     if (!widget) {
-        throw new Error(`Widget not found: ${widgetName}`)
+        throw new Error(`Widget not found: ${widgetId}`)
     }
 
     const [quiz] = await db
         .select()
         .from(quizzes)
-        .where(eq(quizzes.widgetId, widget.id));
+        .where(eq(quizzes.widgetId, widget.id))
 
     if (!quiz) {
-        throw new Error(`Quiz not found for widget: ${widgetName}`);
+        throw new Error(`Quiz not found for widget: ${widget.name}`)
     }
 
     return await fetchQuestionsByQuizId(quiz.id)

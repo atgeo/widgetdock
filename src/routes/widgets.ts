@@ -20,10 +20,11 @@ router.get('/:slug', checkWidgetEnabled, async (req: Request, res: Response) => 
     switch (widget.type) {
         case 'text':
             template = 'widgets/text'
+            results = await getTextForWidget(widget.id)
             break
         case 'quiz':
             template = 'widgets/quiz'
-            results = await getQuestionsForWidget(widget.slug)
+            results = await getQuestionsForWidget(widget.id)
             break
         case 'ticker':
             template = 'widgets/ticker'
@@ -42,9 +43,6 @@ router.post('/:slug/fetch', checkWidgetEnabled, async (req: Request, res: Respon
         let result
 
         switch (widget.type) {
-            case 'text':
-                result = await getTextForWidget(widget.slug)
-                break
             case 'ticker':
                 if (widget.slug === 'news') {
                     result = await getNews()

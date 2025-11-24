@@ -1,7 +1,6 @@
 import {pgTable, serial, integer, timestamp, doublePrecision, unique, boolean, varchar, text} from 'drizzle-orm/pg-core'
 
-export const weather = pgTable('weather',
-    {
+export const weather = pgTable('weather', {
         id: serial('id').primaryKey(),
 
         latitude: doublePrecision().notNull(),
@@ -19,12 +18,11 @@ export const weather = pgTable('weather',
     ],
 )
 
-export const widgets = pgTable('widgets',
-    {
+export const widgets = pgTable('widgets', {
         id: serial('id').primaryKey(),
 
         name: varchar({length: 256}).notNull(),
-        slug: varchar({ length: 256 }).notNull(),
+        slug: varchar({length: 256}).notNull(),
         type: varchar({length: 256}).notNull(),
         enabled: boolean().default(true),
 
@@ -78,7 +76,7 @@ export const quizOptions = pgTable('quiz_options', {
     id: serial('id').primaryKey(),
 
     questionId: integer('question_id')
-        .references(() => quizQuestions.id, { onDelete: 'cascade' })
+        .references(() => quizQuestions.id, {onDelete: 'cascade'})
         .notNull(),
 
     optionText: varchar('option_text', {length: 256}).notNull(),
@@ -89,14 +87,18 @@ export const quizOptions = pgTable('quiz_options', {
 })
 
 export const widgetTexts = pgTable('widget_texts', {
-    id: serial('id').primaryKey(),
+        id: serial('id').primaryKey(),
 
-    widgetId: integer('widget_id')
-        .references(() => widgets.id, {onDelete: 'cascade'})
-        .notNull(),
+        widgetId: integer('widget_id')
+            .references(() => widgets.id, {onDelete: 'cascade'})
+            .notNull(),
 
-    content: text('content').notNull(),
+        content: text('content').notNull(),
 
-    createdAt: timestamp('created_at', {withTimezone: true}).defaultNow().notNull(),
-    updatedAt: timestamp('updated_at', {withTimezone: true}).defaultNow().notNull(),
-})
+        createdAt: timestamp('created_at', {withTimezone: true}).defaultNow().notNull(),
+        updatedAt: timestamp('updated_at', {withTimezone: true}).defaultNow().notNull(),
+    }, (t) => [
+        unique('unique_widget_id').on(t.widgetId),
+    ],
+)
+

@@ -17,8 +17,6 @@ router.post('/:id/generate', async (req: Request, res: Response) => {
     } catch (err) {
         res.status(500).json({error: err instanceof Error ? err.message : 'Unknown error'})
     }
-
-    res.json()
 })
 
 export default router
