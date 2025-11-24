@@ -1,5 +1,5 @@
 import {db} from './db.js'
-import {widgets, prompts} from './schema.js'
+import {widgets, prompts, quizzes} from './schema.js'
 
 async function seed() {
     try {
@@ -13,10 +13,10 @@ async function seed() {
             {name: 'Phrasal Verbs', slug: 'phrasal_verbs', type: 'quiz'},
         ]).returning()
 
-        const passageWidget = inserted.find(widget => widget.name === 'passage')
-        const dialogueWidget = inserted.find(widget => widget.name === 'dialogue')
-        const synonymsWidget = inserted.find(widget => widget.name === 'synonyms')
-        const synonymsBeginnerWidget = inserted.find(widget => widget.name === 'synonyms_beginner')
+        const passageWidget = inserted.find(widget => widget.slug === 'passage')
+        const dialogueWidget = inserted.find(widget => widget.slug === 'dialogue')
+        const synonymsWidget = inserted.find(widget => widget.slug === 'synonyms')
+        const synonymsBeginnerWidget = inserted.find(widget => widget.slug === 'synonyms_beginner')
 
         if (passageWidget) {
             await db.insert(prompts).values([
@@ -37,6 +37,13 @@ async function seed() {
         }
 
         if (synonymsWidget) {
+            await db.insert(quizzes).values([
+                {
+                    widgetId: synonymsWidget.id,
+                    description: 'Select the synonym that best matches the meaning of the given word.',
+                }
+            ])
+
             await db.insert(prompts).values([
                 {
                     widgetId: synonymsWidget.id,
@@ -45,8 +52,14 @@ async function seed() {
             ])
         }
 
-
         if (synonymsBeginnerWidget) {
+            await db.insert(quizzes).values([
+                {
+                    widgetId: synonymsBeginnerWidget.id,
+                    description: 'Select the synonym that best matches the meaning of the given word.',
+                }
+            ])
+
             await db.insert(prompts).values([
                 {
                     widgetId: synonymsBeginnerWidget.id,

@@ -1,13 +1,13 @@
 import {db} from '../db/db.js'
-import {quizOptions, quizQuestions} from '../db/schema.js'
+import {quizzes, quizQuestions, quizOptions} from '../db/schema.js'
 import {eq, inArray} from 'drizzle-orm'
 import type {QuestionWithOptions, QuizOption} from '../types/quiz.js'
 
-export async function fetchQuestionsByWidgetId(widgetId: number): Promise<QuestionWithOptions[]> {
+export async function fetchQuestionsByQuizId(quizId: number): Promise<QuestionWithOptions[]> {
     const questions = await db
         .select()
         .from(quizQuestions)
-        .where(eq(quizQuestions.widgetId, widgetId))
+        .where(eq(quizQuestions.quizId, quizId))
 
     const options = await db
         .select()
@@ -25,12 +25,12 @@ export async function fetchQuestionsByWidgetId(widgetId: number): Promise<Questi
     }))
 }
 
-export async function saveQuestions(widgetId: number, questions: QuestionWithOptions[]) {
+export async function saveQuestions(quizId: number, questions: QuestionWithOptions[]) {
     for (const question of questions) {
         const [insertedQuestion] = await db
             .insert(quizQuestions)
             .values({
-                widgetId,
+                quizId,
                 questionText: question.questionText,
             })
             .returning({id: quizQuestions.id})

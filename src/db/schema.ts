@@ -48,11 +48,24 @@ export const prompts = pgTable('prompts', {
     updatedAt: timestamp('updated_at', {withTimezone: true}).defaultNow().notNull(),
 })
 
-export const quizQuestions = pgTable('quiz_questions', {
+export const quizzes = pgTable('quizzes', {
     id: serial('id').primaryKey(),
 
     widgetId: integer('widget_id')
         .references(() => widgets.id, {onDelete: 'cascade'})
+        .notNull(),
+
+    description: text('description').notNull(),
+
+    createdAt: timestamp('created_at', {withTimezone: true}).defaultNow().notNull(),
+    updatedAt: timestamp('updated_at', {withTimezone: true}).defaultNow().notNull(),
+})
+
+export const quizQuestions = pgTable('quiz_questions', {
+    id: serial('id').primaryKey(),
+
+    quizId: integer('quiz_id')
+        .references(() => quizzes.id, {onDelete: 'cascade'})
         .notNull(),
 
     questionText: text('question_text').notNull(),

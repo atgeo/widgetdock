@@ -1,5 +1,5 @@
-import {fetchQuestionsByWidgetId, saveQuestions} from '../../repositories/quizRepository.js'
-import {widgets} from '../../db/schema.js'
+import {fetchQuestionsByQuizId, saveQuestions} from '../../repositories/quizRepository.js'
+import {quizzes, widgets} from '../../db/schema.js'
 import {and, eq} from 'drizzle-orm'
 import {db} from '../../db/db.js'
 import {generateText} from '../openai/openaiService.js'
@@ -17,7 +17,16 @@ export async function getQuestionsForWidget(widgetName: string) {
         throw new Error(`Widget not found: ${widgetName}`)
     }
 
-    let questions: QuestionWithOptions[] = await fetchQuestionsByWidgetId(widget.id)
+    const [quiz] = await db
+        .select()
+        .from(quizzes)
+        .where(eq(quizzes.widgetId, widget.id));
+
+    if (!quiz) {
+        throw new Error(`Quiz not found for widget: ${widgetName}`);
+    }
+
+    let questions: QuestionWithOptions[] = await fetchQuestionsByQuizId(quiz.id)
 
     if (!questions || !questions.length) {
         const {prompt} = await getPromptForWidgetOrFail(widget.id)
@@ -25,7 +34,7 @@ export async function getQuestionsForWidget(widgetName: string) {
 
         questions = parseQuizText(rawText)
 
-        await saveQuestions(widget.id, questions)
+        await saveQuestions(quiz.id, questions)
     }
 
     return questions

@@ -1,5 +1,5 @@
 {
-  "id": "bced2330-0972-4a7e-b10c-36db41c4e865",
+  "id": "a0efd32d-6107-41cd-a5e5-2d47bf839004",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -139,8 +139,8 @@
           "primaryKey": true,
           "notNull": true
         },
-        "widget_id": {
-          "name": "widget_id",
+        "quiz_id": {
+          "name": "quiz_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
@@ -168,9 +168,68 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "quiz_questions_widget_id_widgets_id_fk": {
-          "name": "quiz_questions_widget_id_widgets_id_fk",
+        "quiz_questions_quiz_id_quizzes_id_fk": {
+          "name": "quiz_questions_quiz_id_quizzes_id_fk",
           "tableFrom": "quiz_questions",
+          "tableTo": "quizzes",
+          "columnsFrom": [
+            "quiz_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.quizzes": {
+      "name": "quizzes",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "widget_id": {
+          "name": "widget_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "quizzes_widget_id_widgets_id_fk": {
+          "name": "quizzes_widget_id_widgets_id_fk",
+          "tableFrom": "quizzes",
           "tableTo": "widgets",
           "columnsFrom": [
             "widget_id"
