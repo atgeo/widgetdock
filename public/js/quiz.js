@@ -7,13 +7,9 @@ function quizWidget () {
     async loadQuiz (refresh = false) {
       try {
         const segments = window.location.pathname.split('/').filter(Boolean)
-        const type = segments.pop() || 'synonyms'
+        const slug = segments.pop() || 'synonyms'
 
-        const res = await fetch('/quiz/fetch', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ type, refresh }),
-        })
+        const res = await fetch(`/w/${slug}/fetch`, { method: 'POST' })
 
         if (!res.ok) {
           console.error(`HTTP error! status: ${res.status}`)
@@ -46,7 +42,10 @@ function quizWidget () {
     },
 
     playPhonetic (word) {
-      fetch('/quiz/phonetic', {
+      const segments = window.location.pathname.split('/').filter(Boolean)
+      const slug = segments.pop() || 'synonyms'
+
+      fetch(`/w/${slug}/phonetic`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ word }),

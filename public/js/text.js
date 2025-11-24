@@ -1,17 +1,8 @@
 async function loadText (refresh = false) {
   try {
     const segments = window.location.pathname.split('/').filter(Boolean)
-    const type = segments.pop() || 'passage'
-    const res = await fetch('/text/generate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        type: type,
-        refresh: refresh,
-      }),
-    })
+    const slug = segments.pop() || 'passage'
+    const res = await fetch(`/w/${slug}/fetch`, { method: 'POST' })
     if (!res.ok) {
       console.error(`HTTP error! status: ${res.status}`)
     }
