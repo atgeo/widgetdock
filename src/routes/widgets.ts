@@ -1,7 +1,5 @@
 import express from 'express'
 import type {Request, Response} from 'express'
-import path from 'path'
-import {fileURLToPath} from 'url'
 import {checkWidgetEnabled} from '../middleware/checkWidgetEnabled.js'
 import {getTextForWidget} from '../services/text/textService.js'
 import {getQuestionsForWidget} from '../services/quiz/quizService.js'
@@ -10,8 +8,6 @@ import {getNews} from '../services/newsService.js'
 import {getWeatherForCities} from '../services/weatherService.js'
 
 const router = express.Router()
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
 
 router.get('/:slug', checkWidgetEnabled, async (req: Request, res: Response) => {
     const widget = req.widget
@@ -19,16 +15,23 @@ router.get('/:slug', checkWidgetEnabled, async (req: Request, res: Response) => 
     if (!widget)
         return res.status(404).json({error: 'Widget not found'})
 
-    const file =
-        widget.type === 'text' ? 'text.html' :
-            widget.type === 'quiz' ? 'quiz.html' :
-                widget.type === 'ticker' ? 'ticker.html' :
-                    null
 
-    if (!file)
-        return res.status(500).json({error: 'Invalid widget type'})
+    let template;
+    switch (widget.type) {
+        case 'text':
+            template = 'widgets/text'
+            break
+        case 'quiz':
+            template = 'widgets/quiz'
+            break
+        case 'ticker':
+            template = 'widgets/ticker'
+            break
+        default:
+            return res.status(400).json({error: 'Unknown widget type'})
+    }
 
-    res.sendFile(path.join(__dirname, '../../views', file))
+    res.render(template, {widget})
 })
 
 router.post('/:slug/fetch', checkWidgetEnabled, async (req: Request, res: Response) => {
