@@ -4,12 +4,13 @@ import {widgets, prompts} from './schema.js'
 async function seed() {
     try {
         const inserted = await db.insert(widgets).values([
-            {name: 'weather', type: 'ticker'},
-            {name: 'news', type: 'ticker'},
-            {name: 'passage', type: 'text'},
-            {name: 'dialogue', type: 'text'},
-            {name: 'synonyms', type: 'quiz'},
-            {name: 'synonyms_beginner', type: 'quiz'},
+            {name: 'Weather', slug: 'weather', type: 'ticker'},
+            {name: 'News', slug: 'news', type: 'ticker'},
+            {name: 'Passage', slug: 'passage', type: 'text'},
+            {name: 'Dialogue', slug: 'dialogue', type: 'text'},
+            {name: 'Synonyms', slug: 'synonyms', type: 'quiz'},
+            {name: 'Synonyms Beginner', slug: 'synonyms_beginner', type: 'quiz'},
+            {name: 'Phrasal Verbs', slug: 'phrasal_verbs', type: 'quiz'},
         ]).returning()
 
         const passageWidget = inserted.find(widget => widget.name === 'passage')

@@ -8,7 +8,7 @@ export async function getTextForWidget(widgetName: string) {
     const [widget] = await db
         .select()
         .from(widgets)
-        .where(and(eq(widgets.name, widgetName), eq(widgets.type, 'text')))
+        .where(and(eq(widgets.slug, widgetName), eq(widgets.type, 'text')))
 
     if (!widget) {
         throw new Error(`Widget not found: ${widgetName}`)
@@ -22,7 +22,7 @@ export async function getTextForWidget(widgetName: string) {
     if (widgetText)
         return widgetText.content
 
-    const {prompt} = await getPromptForWidgetOrFail(widgetName, 'text')
+    const {prompt} = await getPromptForWidgetOrFail(widget.id)
 
     const content = await generateText(prompt)
 

@@ -47,6 +47,7 @@ CREATE TABLE "widget_texts" (
 CREATE TABLE "widgets" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" varchar(256) NOT NULL,
+	"slug" varchar(256) NOT NULL,
 	"type" varchar(256) NOT NULL,
 	"enabled" boolean DEFAULT true,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,

@@ -4,7 +4,7 @@ import {widgets} from '../db/schema.js'
 import {eq} from 'drizzle-orm'
 
 export async function checkWidgetEnabled(req: Request, res: Response, next: NextFunction) {
-    const widgetName = req.params.name
+    const widgetName = req.params.slug
 
     if (!widgetName) {
         return res.status(400).send('Widget name is required')
@@ -14,7 +14,7 @@ export async function checkWidgetEnabled(req: Request, res: Response, next: Next
         const widget = await db
             .select()
             .from(widgets)
-            .where(eq(widgets.name, widgetName))
+            .where(eq(widgets.slug, widgetName))
 
         if (!widget[0] || widget[0].enabled !== true) {
             return res.status(404).send('Widget disabled or not found')

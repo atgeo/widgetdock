@@ -11,7 +11,7 @@ export async function getQuestionsForWidget(widgetName: string) {
     const [widget] = await db
         .select()
         .from(widgets)
-        .where(and(eq(widgets.name, widgetName), eq(widgets.type, 'quiz')))
+        .where(and(eq(widgets.slug, widgetName), eq(widgets.type, 'quiz')))
 
     if (!widget) {
         throw new Error(`Widget not found: ${widgetName}`)
@@ -20,7 +20,7 @@ export async function getQuestionsForWidget(widgetName: string) {
     let questions: QuestionWithOptions[] = await fetchQuestionsByWidgetId(widget.id)
 
     if (!questions || !questions.length) {
-        const {prompt} = await getPromptForWidgetOrFail(widgetName, 'quiz')
+        const {prompt} = await getPromptForWidgetOrFail(widget.id)
         const rawText = await generateText(prompt)
 
         questions = parseQuizText(rawText)

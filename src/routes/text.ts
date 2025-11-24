@@ -8,7 +8,7 @@ const router = express.Router()
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-router.get('/:name', checkWidgetEnabled, (_req: Request, res: Response) => {
+router.get('/:slug', checkWidgetEnabled, (_req: Request, res: Response) => {
     res.sendFile(path.join(__dirname, '../../views', 'text.html'))
 })
 

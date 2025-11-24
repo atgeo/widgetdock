@@ -24,6 +24,7 @@ export const widgets = pgTable('widgets',
         id: serial('id').primaryKey(),
 
         name: varchar({length: 256}).notNull(),
+        slug: varchar({ length: 256 }).notNull(),
         type: varchar({length: 256}).notNull(),
         enabled: boolean().default(true),
 
