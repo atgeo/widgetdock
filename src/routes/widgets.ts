@@ -15,8 +15,8 @@ router.get('/:slug', checkWidgetEnabled, async (req: Request, res: Response) => 
     if (!widget)
         return res.status(404).json({error: 'Widget not found'})
 
+    let template
 
-    let template;
     switch (widget.type) {
         case 'text':
             template = 'widgets/text'
@@ -40,29 +40,34 @@ router.post('/:slug/fetch', checkWidgetEnabled, async (req: Request, res: Respon
     try {
         let result
 
-        if (widget.type === 'text') {
-            result = await getTextForWidget(widget.slug)
-        } else if (widget.type === 'quiz') {
-            result = await getQuestionsForWidget(widget.slug)
-        } else if (widget.type === 'ticker') {
-            if (widget.slug === 'news') {
-                result = await getNews()
-            } else {
-                const cities = (process.env.WEATHER_CITIES || '').split(',')
+        switch (widget.type) {
+            case 'text':
+                result = await getTextForWidget(widget.slug)
+                break
+            case 'quiz':
+                result = await getQuestionsForWidget(widget.slug)
+                break
+            case 'ticker':
+                if (widget.slug === 'news') {
+                    result = await getNews()
+                } else {
+                    const cities = (process.env.WEATHER_CITIES || '').split(',')
 
-                const results = await getWeatherForCities(cities)
+                    const results = await getWeatherForCities(cities)
 
-                result = results
-                    .filter((r): r is NonNullable<typeof r> => r !== undefined)
-                    .map(r => ({
-                            city: r.city,
-                            temperature: Math.round(r.temperature),
-                            desc: r.desc,
-                        }),
-                    )
-            }
-        } else {
-            throw new Error('Unknown widget type')
+                    result = results
+                        .filter((r): r is NonNullable<typeof r> => r !== undefined)
+                        .map(r => ({
+                                city: r.city,
+                                temperature: Math.round(r.temperature),
+                                desc: r.desc,
+                            }),
+                        )
+                }
+                break
+            default:
+                res.status(400).json({error: 'Unknown widget type'})
+                return
         }
 
         res.json({result})
