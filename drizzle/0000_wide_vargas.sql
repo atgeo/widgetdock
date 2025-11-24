@@ -2,8 +2,8 @@ CREATE TABLE "prompts" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"widget_id" integer NOT NULL,
 	"prompt" text NOT NULL,
-	"created_at" timestamp DEFAULT now() NOT NULL,
-	"updated_at" timestamp DEFAULT now() NOT NULL
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "quiz_options" (
@@ -11,16 +11,16 @@ CREATE TABLE "quiz_options" (
 	"question_id" integer NOT NULL,
 	"option_text" varchar(256) NOT NULL,
 	"is_correct" boolean DEFAULT false NOT NULL,
-	"created_at" timestamp DEFAULT now() NOT NULL,
-	"updated_at" timestamp DEFAULT now() NOT NULL
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "quiz_questions" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"widget_id" integer NOT NULL,
 	"question_text" text NOT NULL,
-	"created_at" timestamp DEFAULT now() NOT NULL,
-	"updated_at" timestamp DEFAULT now() NOT NULL
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "weather" (
@@ -40,8 +40,8 @@ CREATE TABLE "widget_texts" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"widget_id" integer NOT NULL,
 	"content" text NOT NULL,
-	"created_at" timestamp DEFAULT now() NOT NULL,
-	"updated_at" timestamp DEFAULT now() NOT NULL
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "widgets" (

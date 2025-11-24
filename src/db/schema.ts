@@ -43,8 +43,8 @@ export const prompts = pgTable('prompts', {
 
     prompt: text('prompt').notNull(),
 
-    createdAt: timestamp('created_at').defaultNow().notNull(),
-    updatedAt: timestamp('updated_at').defaultNow().notNull(),
+    createdAt: timestamp('created_at', {withTimezone: true}).defaultNow().notNull(),
+    updatedAt: timestamp('updated_at', {withTimezone: true}).defaultNow().notNull(),
 })
 
 export const quizQuestions = pgTable('quiz_questions', {
@@ -56,8 +56,8 @@ export const quizQuestions = pgTable('quiz_questions', {
 
     questionText: text('question_text').notNull(),
 
-    createdAt: timestamp('created_at').defaultNow().notNull(),
-    updatedAt: timestamp('updated_at').defaultNow().notNull(),
+    createdAt: timestamp('created_at', {withTimezone: true}).defaultNow().notNull(),
+    updatedAt: timestamp('updated_at', {withTimezone: true}).defaultNow().notNull(),
 })
 
 export const quizOptions = pgTable('quiz_options', {
@@ -70,8 +70,8 @@ export const quizOptions = pgTable('quiz_options', {
     optionText: varchar('option_text', {length: 256}).notNull(),
     isCorrect: boolean('is_correct').default(false).notNull(),
 
-    createdAt: timestamp('created_at').defaultNow().notNull(),
-    updatedAt: timestamp('updated_at').defaultNow().notNull(),
+    createdAt: timestamp('created_at', {withTimezone: true}).defaultNow().notNull(),
+    updatedAt: timestamp('updated_at', {withTimezone: true}).defaultNow().notNull(),
 })
 
 export const widgetTexts = pgTable('widget_texts', {
@@ -83,6 +83,6 @@ export const widgetTexts = pgTable('widget_texts', {
 
     content: text('content').notNull(),
 
-    createdAt: timestamp('created_at').defaultNow().notNull(),
-    updatedAt: timestamp('updated_at').defaultNow().notNull(),
+    createdAt: timestamp('created_at', {withTimezone: true}).defaultNow().notNull(),
+    updatedAt: timestamp('updated_at', {withTimezone: true}).defaultNow().notNull(),
 })
