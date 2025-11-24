@@ -1,7 +1,5 @@
 import type {Request, Response, NextFunction} from 'express'
-import {db} from '../db/db.js'
-import {widgets} from '../db/schema.js'
-import {eq} from 'drizzle-orm'
+import {getWidgetBySlug} from '../services/widgets.js'
 
 export async function checkWidgetEnabled(req: Request, res: Response, next: NextFunction) {
     const widgetName = req.params.slug
@@ -11,17 +9,14 @@ export async function checkWidgetEnabled(req: Request, res: Response, next: Next
     }
 
     try {
-        const widget = await db
-            .select()
-            .from(widgets)
-            .where(eq(widgets.slug, widgetName))
+        const widget = await getWidgetBySlug(widgetName)
 
-        if (!widget[0] || widget[0].enabled !== true) {
+        if (!widget || widget.enabled !== true) {
             return res.status(404).send('Widget disabled or not found')
         }
 
         // optionally attach widget to req for later handlers
-        (req as any).widget = widget[0]
+        req.widget = widget
         next()
     } catch (err) {
         console.error(err)

@@ -4,15 +4,10 @@ import path from 'path'
 import {fileURLToPath} from 'url'
 import {getWeatherForCities} from '../services/weatherService.js'
 import {getNews} from '../services/newsService.js'
-import {checkWidgetEnabled} from '../middleware/checkWidgetEnabled.js'
 
 const router = express.Router()
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
-
-router.get('/:slug', checkWidgetEnabled, (_req: Request, res: Response) => {
-    res.sendFile(path.join(__dirname, '../../views', 'ticker.html'))
-})
 
 router.post('/fetch', async (req: Request, res: Response) => {
     const {type} = req.body
