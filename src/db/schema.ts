@@ -13,6 +13,7 @@ export const weather = pgTable('weather',
         isDay: boolean('is_day').notNull(),
 
         createdAt: timestamp('created_at', {withTimezone: true}).defaultNow().notNull(),
+        updatedAt: timestamp('updated_at', {withTimezone: true}).defaultNow().notNull(),
     }, (t) => [
         unique('unique_location').on(t.latitude, t.longitude),
     ],

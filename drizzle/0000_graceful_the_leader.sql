@@ -32,7 +32,16 @@ CREATE TABLE "weather" (
 	"weather_code" integer NOT NULL,
 	"is_day" boolean NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
 	CONSTRAINT "unique_location" UNIQUE("latitude","longitude")
+);
+--> statement-breakpoint
+CREATE TABLE "widget_texts" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"widget_id" integer NOT NULL,
+	"content" text NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "widgets" (
@@ -47,4 +56,5 @@ CREATE TABLE "widgets" (
 --> statement-breakpoint
 ALTER TABLE "prompts" ADD CONSTRAINT "prompts_widget_id_widgets_id_fk" FOREIGN KEY ("widget_id") REFERENCES "public"."widgets"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "quiz_options" ADD CONSTRAINT "quiz_options_question_id_quiz_questions_id_fk" FOREIGN KEY ("question_id") REFERENCES "public"."quiz_questions"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "quiz_questions" ADD CONSTRAINT "quiz_questions_widget_id_widgets_id_fk" FOREIGN KEY ("widget_id") REFERENCES "public"."widgets"("id") ON DELETE cascade ON UPDATE no action;
+ALTER TABLE "quiz_questions" ADD CONSTRAINT "quiz_questions_widget_id_widgets_id_fk" FOREIGN KEY ("widget_id") REFERENCES "public"."widgets"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "widget_texts" ADD CONSTRAINT "widget_texts_widget_id_widgets_id_fk" FOREIGN KEY ("widget_id") REFERENCES "public"."widgets"("id") ON DELETE cascade ON UPDATE no action;
