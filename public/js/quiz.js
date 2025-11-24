@@ -1,40 +1,19 @@
 function quizWidget () {
+  const raw = document.getElementById('quiz-data').textContent
+  const parsed = JSON.parse(raw)
+
   return {
-    quiz: null,
+    quiz: parsed.map(item => {
+      const shuffled = [...item.options].sort(() => Math.random() - 0.5)
+      return {
+        word: item.questionText,
+        options: shuffled.map(o => o.optionText),
+        correctIndex: shuffled.findIndex(o => o.isCorrect),
+        feedback: ''
+      }
+    }),
     feedback: '',
     correctIndex: 0,
-
-    async loadQuiz (refresh = false) {
-      try {
-        const segments = window.location.pathname.split('/').filter(Boolean)
-        const slug = segments.pop() || 'synonyms'
-
-        const res = await fetch(`/w/${slug}/fetch`, { method: 'POST' })
-
-        if (!res.ok) {
-          console.error(`HTTP error! status: ${res.status}`)
-          this.feedback = 'Failed to load quiz.'
-          return
-        }
-
-        const data = await res.json()
-
-        this.quiz = data.result.map(item => {
-          // shuffle options for this item
-          const shuffled = [...item.options].sort(() => Math.random() - 0.5)
-
-          return {
-            word: item.questionText,
-            options: shuffled.map(o => o.optionText),
-            correctIndex: shuffled.findIndex(o => o.isCorrect),
-            feedback: ''
-          }
-        })
-      } catch (err) {
-        console.error('Error fetching quiz:', err)
-        this.feedback = 'Failed to load quiz.'
-      }
-    },
 
     checkAnswer (itemIdx, optionIdx) {
       const item = this.quiz[itemIdx]
@@ -58,7 +37,7 @@ function quizWidget () {
     },
 
     init () {
-      this.loadQuiz()
+      //
     },
   }
 }

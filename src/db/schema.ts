@@ -78,7 +78,7 @@ export const quizOptions = pgTable('quiz_options', {
     id: serial('id').primaryKey(),
 
     questionId: integer('question_id')
-        .references(() => quizQuestions.id)
+        .references(() => quizQuestions.id, { onDelete: 'cascade' })
         .notNull(),
 
     optionText: varchar('option_text', {length: 256}).notNull(),

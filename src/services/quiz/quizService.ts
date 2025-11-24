@@ -1,11 +1,30 @@
 import {fetchQuestionsByQuizId, saveQuestions} from '../../repositories/quizRepository.js'
-import {quizzes, widgets} from '../../db/schema.js'
+import {quizQuestions, quizzes, widgets} from '../../db/schema.js'
 import {and, eq} from 'drizzle-orm'
 import {db} from '../../db/db.js'
 import {generateText} from '../openai/openaiService.js'
-import type {QuestionWithOptions} from '../../types/quiz.js'
 import {parseQuizText} from './quizParsingService.js'
 import {getPromptForWidgetOrFail} from '../promptService.js'
+
+export async function generateQuizQuestions(quizId: number) {
+    const [quiz] = await db.select().from(quizzes).where(eq(quizzes.id, quizId))
+
+    if (!quiz) throw new Error('Quiz not found')
+
+    const [widget] = await db.select().from(widgets).where(eq(widgets.id, quiz.widgetId));
+    if (!widget || widget.type !== 'quiz') throw new Error('Parent widget is not a quiz widget')
+
+    const {prompt} = await getPromptForWidgetOrFail(widget.id)
+    const rawText = await generateText(prompt)
+
+    const questions = parseQuizText(rawText)
+
+    await db.transaction(async (tx) => {
+        await tx.delete(quizQuestions).where(eq(quizQuestions.quizId, quiz.id))
+
+        await saveQuestions(quiz.id, questions)
+    })
+}
 
 export async function getQuestionsForWidget(widgetName: string) {
     const [widget] = await db
@@ -26,16 +45,5 @@ export async function getQuestionsForWidget(widgetName: string) {
         throw new Error(`Quiz not found for widget: ${widgetName}`);
     }
 
-    let questions: QuestionWithOptions[] = await fetchQuestionsByQuizId(quiz.id)
-
-    if (!questions || !questions.length) {
-        const {prompt} = await getPromptForWidgetOrFail(widget.id)
-        const rawText = await generateText(prompt)
-
-        questions = parseQuizText(rawText)
-
-        await saveQuestions(quiz.id, questions)
-    }
-
-    return questions
+    return await fetchQuestionsByQuizId(quiz.id)
 }

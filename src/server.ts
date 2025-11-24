@@ -2,6 +2,7 @@ import express from 'express'
 import path from 'path'
 import {fileURLToPath} from 'url'
 import widgetRoutes from './routes/widgets.js'
+import apiQuizRoutes from './routes/api/quizzes.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -16,6 +17,7 @@ app.set('views', path.join(__dirname, '../views'))
 app.set('view engine', 'ejs')
 
 app.use('/w', widgetRoutes)
+app.use('/api/quizzes', apiQuizRoutes)
 
 const port = process.env.PORT || 3000
 app.listen(port, () => console.log(`Server running on port ${port}`))

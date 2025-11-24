@@ -15,7 +15,7 @@ router.get('/:slug', checkWidgetEnabled, async (req: Request, res: Response) => 
     if (!widget)
         return res.status(404).json({error: 'Widget not found'})
 
-    let template
+    let template, results
 
     switch (widget.type) {
         case 'text':
@@ -23,6 +23,7 @@ router.get('/:slug', checkWidgetEnabled, async (req: Request, res: Response) => 
             break
         case 'quiz':
             template = 'widgets/quiz'
+            results = await getQuestionsForWidget(widget.slug)
             break
         case 'ticker':
             template = 'widgets/ticker'
@@ -31,7 +32,7 @@ router.get('/:slug', checkWidgetEnabled, async (req: Request, res: Response) => 
             return res.status(400).json({error: 'Unknown widget type'})
     }
 
-    res.render(template, {widget})
+    res.render(template, {widget, results})
 })
 
 router.post('/:slug/fetch', checkWidgetEnabled, async (req: Request, res: Response) => {
@@ -43,9 +44,6 @@ router.post('/:slug/fetch', checkWidgetEnabled, async (req: Request, res: Respon
         switch (widget.type) {
             case 'text':
                 result = await getTextForWidget(widget.slug)
-                break
-            case 'quiz':
-                result = await getQuestionsForWidget(widget.slug)
                 break
             case 'ticker':
                 if (widget.slug === 'news') {
