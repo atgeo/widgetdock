@@ -100,6 +100,8 @@ router.get('/:slug', checkWidgetEnabled, async (req: Request, res: Response) => 
  *                             example: "🌙"
  *       400:
  *         description: Unknown widget type
+ *       404:
+ *         description: Widget disabled or not found
  *       500:
  *         description: Internal server error
  */
@@ -140,7 +142,44 @@ router.post('/:slug/fetch', checkWidgetEnabled, async (req: Request, res: Respon
     }
 })
 
-router.post('/:slug/phonetic', async (req: Request, res: Response) => {
+/**
+ * @openapi
+ * /w/{slug}/phonetic:
+ *   post:
+ *     summary: Fetch phonetic audio URL
+ *     parameters:
+ *       - in: path
+ *         name: slug
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The unique slug of the widget
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               word:
+ *                 type: string
+ *                 description: The word to fetch phonetic audio for
+ *                 example: "alleviate"
+ *     responses:
+ *       200:
+ *         description: Successfully fetched phonetic audio URL
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 result:
+ *                   type: string
+ *                   example: "https://api.dictionaryapi.dev/media/pronunciations/en/alleviate-us.mp3"
+ *       404:
+ *         description: Widget disabled or not found
+ */
+router.post('/:slug/phonetic', checkWidgetEnabled, async (req: Request, res: Response) => {
     const {word} = req.body
     const result = await fetchPhonetic(word)
     res.json({result})
