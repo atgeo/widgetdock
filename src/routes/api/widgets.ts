@@ -4,6 +4,7 @@ import {generateQuizQuestions} from '../../services/quiz/quizService.js'
 import {checkJwt} from '../../middleware/checkJwt.js'
 import {generateWidgetText} from '../../services/text/textService.js'
 import {getWidgetById} from '../../repositories/widgetRepository.js'
+import {toggleWidget} from '../../services/widgetService.js'
 
 const router = express.Router()
 
@@ -81,6 +82,89 @@ router.post('/:id/generate', checkJwt, async (req: Request, res: Response) => {
             default:
                 res.status(400).json({message: 'Unsupported widget type'})
         }
+    } catch (err) {
+        res.status(500).json({error: err instanceof Error ? err.message : 'Unknown error'})
+    }
+})
+
+/**
+ * @openapi
+ * /api/{id}:
+ *   patch:
+ *     summary: Enable or disable a widget
+ *     tags:
+ *       - Widget Management
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               enabled:
+ *                 type: boolean
+ *     responses:
+ *       200:
+ *         description: Widget updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Widget enabled successfully
+ *       400:
+ *         description: Invalid widget ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Invalid widget ID"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Unknown error"
+ */
+router.patch('/:id', checkJwt, async (req: Request, res: Response) => {
+    try {
+        const id = Number(req.params.id)
+
+        if (!id || Number.isNaN(id)) {
+            return res.status(400).json({error: 'Invalid widget ID'})
+        }
+
+        const {enabled} = req.body || {}
+
+        if (typeof enabled !== 'boolean') {
+            return res.status(400).json({
+                success: false,
+                message: '\'enabled\' field must be true or false'
+            })
+        }
+
+        const result = await toggleWidget(id, enabled)
+        res.json(result)
     } catch (err) {
         res.status(500).json({error: err instanceof Error ? err.message : 'Unknown error'})
     }
