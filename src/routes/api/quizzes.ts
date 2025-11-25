@@ -9,6 +9,8 @@ const router = express.Router()
  * /api/quizzes/{id}/generate:
  *   post:
  *     summary: Generate a quiz by ID
+ *     tags:
+ *       - Widget Management
  *     parameters:
  *       - in: path
  *         name: id

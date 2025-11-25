@@ -13,7 +13,10 @@ const router = express.Router()
  * @openapi
  * /w/{slug}:
  *   get:
- *     summary: Render a single widget page by slug
+ *     summary: Render widget page
+ *     description: Returns an HTML page for the widget identified by slug
+ *     tags:
+ *       - Pages
  *     parameters:
  *       - in: path
  *         name: slug
@@ -63,6 +66,9 @@ router.get('/:slug', checkWidgetEnabled, async (req: Request, res: Response) => 
  * /w/{slug}/fetch:
  *   post:
  *     summary: Fetch data for a specific widget
+ *     description: Returns JSON data for the widget identified by slug
+ *     tags:
+ *       - Widget API
  *     parameters:
  *       - in: path
  *         name: slug
@@ -146,7 +152,10 @@ router.post('/:slug/fetch', checkWidgetEnabled, async (req: Request, res: Respon
  * @openapi
  * /w/{slug}/phonetic:
  *   post:
- *     summary: Fetch phonetic audio URL
+ *     summary: Fetch phonetic audio URL for a widget
+ *     description: Returns a URL to the pronunciation audio for the widget identified by slug
+ *     tags:
+ *       - Widget API
  *     parameters:
  *       - in: path
  *         name: slug

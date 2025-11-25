@@ -9,6 +9,8 @@ const router = express.Router()
  * /api/texts/{id}/generate:
  *   post:
  *     summary: Generate a text by widget ID
+ *     tags:
+ *       - Widget Management
  *     parameters:
  *       - in: path
  *         name: id
