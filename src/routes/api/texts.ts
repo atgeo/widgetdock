@@ -4,6 +4,53 @@ import {generateWidgetText} from '../../services/text/textService.js'
 
 const router = express.Router()
 
+/**
+ * @openapi
+ * /api/texts/{id}/generate:
+ *   post:
+ *     summary: Generate a text by widget ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The unique ID of the widget
+ *     responses:
+ *       200:
+ *         description: Text successfully generated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: "Text generated successfully"
+ *       400:
+ *         description: Invalid widget ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Invalid widget ID"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Unknown error"
+ */
 router.post('/:id/generate', async (req: Request, res: Response) => {
     const widgetId = Number(req.params.id)
 

@@ -4,6 +4,53 @@ import {generateQuizQuestions} from '../../services/quiz/quizService.js'
 
 const router = express.Router()
 
+/**
+ * @openapi
+ * /api/quizzes/{id}/generate:
+ *   post:
+ *     summary: Generate a quiz by ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The unique ID of the quiz
+ *     responses:
+ *       200:
+ *         description: Quiz successfully generated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: "Quiz questions generated successfully"
+ *       400:
+ *         description: Invalid quiz ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Invalid quiz ID"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Unknown error"
+ */
 router.post('/:id/generate', async (req: Request, res: Response) => {
     const quizId = Number(req.params.id)
 

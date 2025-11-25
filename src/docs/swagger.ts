@@ -10,7 +10,7 @@ const options = {
         },
     },
     apis: [
-        'src/routes/*.ts', // paths to files containing Swagger comments
+        'src/routes/**/*.ts',
     ],
 }
 
