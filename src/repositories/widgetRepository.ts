@@ -2,6 +2,10 @@ import {db} from '../db/db.js'
 import {widgets} from '../db/schema.js'
 import {and, eq, ne} from 'drizzle-orm'
 
+export async function getAllWidgets() {
+    return db.select().from(widgets)
+}
+
 export async function getWidgetBySlug(slug: string) {
     const [widget] = await db
         .select()

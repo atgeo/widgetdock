@@ -3,18 +3,70 @@ import type {Request, Response} from 'express'
 import {generateQuizQuestions} from '../../services/quiz/quizService.js'
 import {checkJwt} from '../../middleware/checkJwt.js'
 import {generateWidgetText} from '../../services/text/textService.js'
-import {getWidgetById} from '../../repositories/widgetRepository.js'
+import {getAllWidgets, getWidgetById} from '../../repositories/widgetRepository.js'
 import {toggleWidget} from '../../services/widgetService.js'
 
 const router = express.Router()
+router.use(checkJwt)
 
 /**
  * @openapi
- * /api/{id}/generate:
+ * /api/widgets:
+ *   get:
+ *     summary: List all widgets
+ *     tags:
+ *       - API / Widgets
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of widgets
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         example: 1
+ *                       slug:
+ *                         type: string
+ *                         example: weather
+ *                       type:
+ *                         type: string
+ *                         example: ticker
+ *                       enabled:
+ *                         type: boolean
+ *                         example: true
+ *                       createdAt:
+ *                         type: string
+ *                         format: date-time
+ *                         example: "2025-11-25T08:00:00Z"
+ */
+router.get('/', async (_req: Request, res: Response) => {
+    try {
+        const widgets = await getAllWidgets()
+        res.json({success: true, data: widgets})
+    } catch (err) {
+        res.status(500).json({error: err instanceof Error ? err.message : 'Unknown error'})
+    }
+})
+
+/**
+ * @openapi
+ * /api/widgets/{id}/generate:
  *   post:
  *     summary: Generate data by widget ID
  *     tags:
- *       - Widget Management
+ *       - API / Widgets
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -59,7 +111,7 @@ const router = express.Router()
  *                   type: string
  *                   example: "Unknown error"
  */
-router.post('/:id/generate', checkJwt, async (req: Request, res: Response) => {
+router.post('/:id/generate', async (req: Request, res: Response) => {
     const id = Number(req.params.id)
 
     if (!id || Number.isNaN(id)) {
@@ -89,11 +141,11 @@ router.post('/:id/generate', checkJwt, async (req: Request, res: Response) => {
 
 /**
  * @openapi
- * /api/{id}:
+ * /api/widgets/{id}:
  *   patch:
  *     summary: Enable or disable a widget
  *     tags:
- *       - Widget Management
+ *       - API / Widgets
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -146,7 +198,7 @@ router.post('/:id/generate', checkJwt, async (req: Request, res: Response) => {
  *                   type: string
  *                   example: "Unknown error"
  */
-router.patch('/:id', checkJwt, async (req: Request, res: Response) => {
+router.patch('/:id', async (req: Request, res: Response) => {
     try {
         const id = Number(req.params.id)
 

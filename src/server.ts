@@ -3,7 +3,7 @@ import path from 'path'
 import {fileURLToPath} from 'url'
 import authRouter from './routes/auth.js'
 import widgetRoutes from './routes/widgets.js'
-import apiRoutes from './routes/api/widgets.js'
+import apiWidgetRoutes from './routes/api/widgets.js'
 import swaggerUi from 'swagger-ui-express'
 import {swaggerSpec} from './docs/swagger.js'
 import {jwtErrorHandler} from './middleware/checkJwt.js'
@@ -23,7 +23,7 @@ app.set('view engine', 'ejs')
 app.use('/auth', authRouter)
 
 app.use('/w', widgetRoutes)
-app.use('/api', apiRoutes)
+app.use('/api/widgets', apiWidgetRoutes)
 
 app.use(jwtErrorHandler)
 
