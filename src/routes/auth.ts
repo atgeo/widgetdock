@@ -30,6 +30,12 @@ const router = express.Router()
  *     responses:
  *       200:
  *         description: Successfully logged in
+ *         headers:
+ *           Set-Cookie:
+ *             description: HTTP-only refresh token cookie
+ *             example: refreshToken=abc123; HttpOnly; Path=/; Max-Age=2592000;
+ *             schema:
+ *               type: string
  *         content:
  *           application/json:
  *             schema:
