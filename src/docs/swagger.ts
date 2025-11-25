@@ -11,6 +11,7 @@ const options = {
     },
     apis: [
         'src/routes/**/*.ts',
+        'src/swagger/components.ts',
     ],
 }
 

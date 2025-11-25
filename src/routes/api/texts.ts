@@ -12,6 +12,8 @@ const router = express.Router()
  *     summary: Generate a text by widget ID
  *     tags:
  *       - Widget Management
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
