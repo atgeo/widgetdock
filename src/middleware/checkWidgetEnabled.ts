@@ -1,5 +1,5 @@
 import type {Request, Response, NextFunction} from 'express'
-import {getWidgetBySlug} from '../services/widgets.js'
+import {getWidgetBySlug} from '../repositories/widgetRepository.js'
 
 export async function checkWidgetEnabled(req: Request, res: Response, next: NextFunction) {
     const widgetName = req.params.slug

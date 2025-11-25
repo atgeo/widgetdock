@@ -1,15 +1,17 @@
 import express from 'express'
 import type {Request, Response} from 'express'
-import {generateWidgetText} from '../../services/text/textService.js'
+import {generateQuizQuestions} from '../../services/quiz/quizService.js'
 import {checkJwt} from '../../middleware/checkJwt.js'
+import {generateWidgetText} from '../../services/text/textService.js'
+import {getWidgetById} from '../../repositories/widgetRepository.js'
 
 const router = express.Router()
 
 /**
  * @openapi
- * /api/texts/{id}/generate:
+ * /api/{id}/generate:
  *   post:
- *     summary: Generate a text by widget ID
+ *     summary: Generate data by widget ID
  *     tags:
  *       - Widget Management
  *     security:
@@ -23,7 +25,7 @@ const router = express.Router()
  *         description: The unique ID of the widget
  *     responses:
  *       200:
- *         description: Text successfully generated
+ *         description: Widget successfully generated
  *         content:
  *           application/json:
  *             schema:
@@ -34,7 +36,7 @@ const router = express.Router()
  *                   example: true
  *                 message:
  *                   type: string
- *                   example: "Text generated successfully"
+ *                   example: "Quiz questions generated successfully"
  *       400:
  *         description: Invalid widget ID
  *         content:
@@ -57,15 +59,28 @@ const router = express.Router()
  *                   example: "Unknown error"
  */
 router.post('/:id/generate', checkJwt, async (req: Request, res: Response) => {
-    const widgetId = Number(req.params.id)
+    const id = Number(req.params.id)
 
-    if (!widgetId || Number.isNaN(widgetId)) {
+    if (!id || Number.isNaN(id)) {
         return res.status(400).json({error: 'Invalid widget ID'})
     }
 
+    const widget = await getWidgetById(id)
+    if (!widget) return res.status(404).json({message: 'Widget not found'})
+
     try {
-        await generateWidgetText(widgetId)
-        res.json({success: true, message: 'Text generated successfully'})
+        switch (widget.type) {
+            case 'text':
+                await generateWidgetText(id)
+                res.json({success: true, message: 'Text generated successfully'})
+                break
+            case 'quiz':
+                await generateQuizQuestions(id)
+                res.json({success: true, message: 'Quiz questions generated successfully'})
+                break
+            default:
+                res.status(400).json({message: 'Unsupported widget type'})
+        }
     } catch (err) {
         res.status(500).json({error: err instanceof Error ? err.message : 'Unknown error'})
     }

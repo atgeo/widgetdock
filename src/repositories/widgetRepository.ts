@@ -11,3 +11,13 @@ export async function getWidgetBySlug(slug: string) {
 
     return widget ?? null
 }
+
+export async function getWidgetById(id: number) {
+    const [widget] = await db
+        .select()
+        .from(widgets)
+        .where(eq(widgets.id, id))
+        .limit(1)
+
+    return widget ?? null
+}

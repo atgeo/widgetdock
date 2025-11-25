@@ -3,6 +3,16 @@ import {quizzes, quizQuestions, quizOptions} from '../db/schema.js'
 import {eq, inArray} from 'drizzle-orm'
 import type {QuestionWithOptions, QuizOption} from '../types/quiz.js'
 
+export async function getQuizByWidgetId(widgetId: number) {
+    const [quiz] = await db
+        .select()
+        .from(quizzes)
+        .where(eq(quizzes.widgetId, widgetId))
+        .limit(1)
+
+    return quiz ?? null
+}
+
 export async function fetchQuestionsByQuizId(quizId: number): Promise<QuestionWithOptions[]> {
     const questions = await db
         .select()

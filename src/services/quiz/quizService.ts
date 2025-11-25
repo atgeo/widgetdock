@@ -1,18 +1,18 @@
-import {fetchQuestionsByQuizId, saveQuestions} from '../../repositories/quizRepository.js'
+import {fetchQuestionsByQuizId, getQuizByWidgetId, saveQuestions} from '../../repositories/quizRepository.js'
 import {quizQuestions, quizzes, widgets} from '../../db/schema.js'
 import {and, eq} from 'drizzle-orm'
 import {db} from '../../db/db.js'
 import {generateText} from '../openai/openaiService.js'
 import {parseQuizText} from './quizParsingService.js'
 import {getPromptForWidgetOrFail} from '../promptService.js'
+import {getWidgetById} from '../../repositories/widgetRepository.js'
 
-export async function generateQuizQuestions(quizId: number) {
-    const [quiz] = await db.select().from(quizzes).where(eq(quizzes.id, quizId))
-
-    if (!quiz) throw new Error('Quiz not found')
-
-    const [widget] = await db.select().from(widgets).where(eq(widgets.id, quiz.widgetId))
+export async function generateQuizQuestions(widgetId: number) {
+    const widget = await getWidgetById(widgetId)
     if (!widget || widget.type !== 'quiz') throw new Error('Parent widget is not a quiz widget')
+
+    const quiz = await getQuizByWidgetId(widgetId)
+    if (!quiz) throw new Error('No quiz linked to this widget')
 
     const {prompt} = await getPromptForWidgetOrFail(widget.id)
     const rawText = await generateText(prompt)
