@@ -4,8 +4,9 @@ const options = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'My API',
+            title: 'WidgetDock App',
             version: '1.0.0',
+            description: 'API and page routes for WidgetDock (JSON APIs and HTML pages)',
         },
     },
     apis: [
