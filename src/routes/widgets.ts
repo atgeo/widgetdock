@@ -11,7 +11,7 @@ const router = express.Router()
 
 /**
  * @openapi
- * /widgets/{slug}:
+ * /w/{slug}:
  *   get:
  *     summary: Render a single widget page by slug
  *     parameters:
@@ -29,8 +29,7 @@ const router = express.Router()
  *               type: string
  *               example: "<!DOCTYPE html><html><body>Widget Content</body></html>"
  *       404:
- *         description:
- *           Widget disabled or not found
+ *         description: Widget disabled or not found
  */
 router.get('/:slug', checkWidgetEnabled, async (req: Request, res: Response) => {
     const widget = req.widget
@@ -59,6 +58,51 @@ router.get('/:slug', checkWidgetEnabled, async (req: Request, res: Response) => 
     res.render(template, {widget, results})
 })
 
+/**
+ * @openapi
+ * /w/{slug}/fetch:
+ *   post:
+ *     summary: Fetch data for a specific widget
+ *     parameters:
+ *       - in: path
+ *         name: slug
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The unique slug of the widget
+ *     responses:
+ *       200:
+ *         description: Successfully fetched widget data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 result:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       city:
+ *                         type: string
+ *                         example: "Miami"
+ *                       temperature:
+ *                         type: number
+ *                         example: 22
+ *                       desc:
+ *                         type: object
+ *                         properties:
+ *                           text:
+ *                             type: string
+ *                             example: "Clear sky"
+ *                           icon:
+ *                             type: string
+ *                             example: "🌙"
+ *       400:
+ *         description: Unknown widget type
+ *       500:
+ *         description: Internal server error
+ */
 router.post('/:slug/fetch', checkWidgetEnabled, async (req: Request, res: Response) => {
     const widget = req.widget
 
