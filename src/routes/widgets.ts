@@ -9,6 +9,29 @@ import {getWeatherForCities} from '../services/weatherService.js'
 
 const router = express.Router()
 
+/**
+ * @openapi
+ * /widgets/{slug}:
+ *   get:
+ *     summary: Render a single widget page by slug
+ *     parameters:
+ *       - in: path
+ *         name: slug
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The unique slug of the widget
+ *     responses:
+ *       200:
+ *         content:
+ *           text/html:
+ *             schema:
+ *               type: string
+ *               example: "<!DOCTYPE html><html><body>Widget Content</body></html>"
+ *       404:
+ *         description:
+ *           Widget disabled or not found
+ */
 router.get('/:slug', checkWidgetEnabled, async (req: Request, res: Response) => {
     const widget = req.widget
 

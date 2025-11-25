@@ -4,6 +4,8 @@ import {fileURLToPath} from 'url'
 import widgetRoutes from './routes/widgets.js'
 import apiTextRoutes from './routes/api/texts.js'
 import apiQuizRoutes from './routes/api/quizzes.js'
+import swaggerUi from 'swagger-ui-express'
+import {swaggerSpec} from './docs/swagger.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -20,6 +22,8 @@ app.set('view engine', 'ejs')
 app.use('/w', widgetRoutes)
 app.use('/api/texts', apiTextRoutes)
 app.use('/api/quizzes', apiQuizRoutes)
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 const port = process.env.PORT || 3000
 app.listen(port, () => console.log(`Server running on port ${port}`))
