@@ -1,6 +1,7 @@
 import express from 'express'
 import type {Request, Response} from 'express'
 import {generateQuizQuestions} from '../../services/quiz/quizService.js'
+import {checkJwt} from '../../middleware/checkJwt.js'
 
 const router = express.Router()
 
@@ -53,7 +54,7 @@ const router = express.Router()
  *                   type: string
  *                   example: "Unknown error"
  */
-router.post('/:id/generate', async (req: Request, res: Response) => {
+router.post('/:id/generate', checkJwt, async (req: Request, res: Response) => {
     const quizId = Number(req.params.id)
 
     if (!quizId || Number.isNaN(quizId)) {
