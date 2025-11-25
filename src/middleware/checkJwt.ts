@@ -1,10 +1,10 @@
 import {expressjwt, UnauthorizedError} from 'express-jwt'
 import type {Request, Response, NextFunction} from 'express'
 
-const jwtSecret = process.env.JWT_SECRET
+const jwtSecret = process.env.JWT_ACCESS_SECRET
 
 if (!jwtSecret) {
-    throw new Error('JWT_SECRET is not defined')
+    throw new Error('JWT_ACCESS_SECRET is not defined')
 }
 
 export const checkJwt = expressjwt({

@@ -35,7 +35,7 @@ const router = express.Router()
  *             schema:
  *               type: object
  *               properties:
- *                 token:
+ *                 accessToken:
  *                   type: string
  *                   description: JWT token to use for protected routes
  *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
@@ -52,19 +52,80 @@ const router = express.Router()
  */
 router.post('/login', (req: Request, res: Response) => {
     const {username, password} = req.body
-    if (username === 'admin' && password === 'secret') {
-        const jwtSecret = process.env.JWT_SECRET
-        if (!jwtSecret)
-            throw new Error('JWT_SECRET is not defined')
 
-        const token = jwt.sign(
-            {userId: 1, role: 'admin'},
-            jwtSecret,
-            {expiresIn: '1h'}
-        )
-        return res.json({token})
+    if (username !== 'admin' || password !== 'secret') {
+        return res.status(401).json({error: 'Invalid credentials'})
     }
-    res.status(401).json({error: 'Invalid credentials'})
+
+    const accessSecret = process.env.JWT_ACCESS_SECRET
+    const refreshSecret = process.env.JWT_REFRESH_SECRET
+
+    if (!accessSecret || !refreshSecret) {
+        throw new Error('JWT secrets missing');
+    }
+
+    const accessToken = jwt.sign({userId: 1, role: 'admin'}, accessSecret, {expiresIn: '15m'})
+    const refreshToken = jwt.sign({userId: 1}, refreshSecret, {expiresIn: '7d'})
+
+    res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict'
+    })
+
+    return res.json({accessToken})
+})
+
+/**
+ * @openapi
+ * /auth/refresh-token:
+ *   post:
+ *     summary: Refresh access token
+ *     tags:
+ *       - Auth
+ *     responses:
+ *       200:
+ *         description: New access token returned
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 accessToken:
+ *                   type: string
+ *                   description: JWT token to use for protected routes
+ *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ *       401:
+ *         description: Missing or invalid refresh token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: No refresh token provided
+ */
+router.post('/refresh-token', async (req, res) => {
+    const token = req.cookies.refreshToken
+    if (!token) {
+        return res.status(401).json({error: 'No refresh token provided'})
+    }
+
+    const accessSecret = process.env.JWT_ACCESS_SECRET
+    const refreshSecret = process.env.JWT_REFRESH_SECRET
+
+    if (!accessSecret) throw new Error('JWT_ACCESS_SECRET is not defined')
+    if (!refreshSecret) throw new Error('JWT_REFRESH_SECRET is not defined')
+
+    const payload = jwt.verify(token, refreshSecret)
+
+    if (typeof payload !== 'object' || !payload.userId) {
+        throw new Error('Invalid refresh token payload')
+    }
+
+    const newAccessToken = jwt.sign({userId: payload.userId}, accessSecret, {expiresIn: '15m'})
+    res.json({accessToken: newAccessToken})
 })
 
 export default router

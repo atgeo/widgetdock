@@ -1,4 +1,5 @@
 import express from 'express'
+import cookieParser from 'cookie-parser'
 import path from 'path'
 import {fileURLToPath} from 'url'
 import authRouter from './routes/auth.js'
@@ -16,6 +17,7 @@ app.use(express.static('public'))
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+app.use(cookieParser())
 
 app.set('views', path.join(__dirname, '../views'))
 app.set('view engine', 'ejs')
