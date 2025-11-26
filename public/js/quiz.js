@@ -20,20 +20,38 @@ function quizWidget () {
       item.feedback = optionIdx === item.correctIndex ? '✅ Correct!' : '❌ Wrong!'
     },
 
-    playPhonetic (word) {
+    playPhonetic: async function (word) {
       const segments = window.location.pathname.split('/').filter(Boolean)
       const slug = segments.pop() || 'synonyms'
 
-      fetch(`/w/${slug}/phonetic`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ word }),
-      }).then(res => res.json()).then(data => {
+      if (!accessToken) {
+        await loadAccessToken()
+        if (!accessToken) {
+          console.warn('Not authenticated, cannot fetch phonetic')
+          return;
+        }
+      }
+
+      try {
+        const res = await fetch(`/w/${slug}/phonetic`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({ word }),
+        })
+
+        if (!res.ok) throw new Error('Failed to fetch phonetic')
+
+        const data = await res.json()
         if (!data.result) return
 
         const audio = new Audio(data.result)
-        audio.play()
-      }).catch(err => console.error('Error fetching phonetic:', err))
+        await audio.play()
+      } catch (err) {
+        console.error('Error fetching phonetic:', err);
+      }
     },
 
     init () {
