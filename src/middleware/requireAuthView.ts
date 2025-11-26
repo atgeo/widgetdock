@@ -1,24 +1,31 @@
 import jwt from 'jsonwebtoken'
 import type {NextFunction, Request, Response} from 'express'
+import {getUserById} from '../repositories/userRepository.js'
 
 interface AuthRequest extends Request {
-    user?: { userId: number; role?: string }
+    user?: { userId: number; username: string }
 }
 
-export function requireAuthView(req: AuthRequest, res: Response, next: NextFunction) {
+export async function requireAuthView(req: AuthRequest, res: Response, next: NextFunction) {
     const token = req.cookies.refreshToken
-    const refreshSecret = process.env.JWT_REFRESH_SECRET;
+    const refreshSecret = process.env.JWT_REFRESH_SECRET
+    const redirectTo = encodeURIComponent(req.originalUrl)
 
     if (!token || !refreshSecret) {
-        const redirectTo = encodeURIComponent(req.originalUrl)
         return res.redirect(`/login?redirect=${redirectTo}`)
     }
 
     try {
-        req.user = jwt.verify(token, refreshSecret) as { userId: number; role?: string }
+        const payload = jwt.verify(token, refreshSecret) as { userId: number; role?: string }
+        const user = await getUserById(payload.userId)
+
+        if (!user) {
+            return res.redirect(`/login?redirect=${redirectTo}`)
+        }
+
+        req.user = {userId: user.id, username: user.username}
         return next()
     } catch (err) {
-        const redirectTo = encodeURIComponent(req.originalUrl)
         return res.redirect(`/login?redirect=${redirectTo}`)
     }
 }
