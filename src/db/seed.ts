@@ -4,13 +4,13 @@ import {widgets, prompts, quizzes} from './schema.js'
 async function seed() {
     try {
         const inserted = await db.insert(widgets).values([
-            {name: 'Weather', slug: 'weather', type: 'ticker'},
-            {name: 'News', slug: 'news', type: 'ticker'},
-            {name: 'Passage', slug: 'passage', type: 'text'},
-            {name: 'Dialogue', slug: 'dialogue', type: 'text'},
-            {name: 'Synonyms', slug: 'synonyms', type: 'quiz'},
-            {name: 'Synonyms Beginner', slug: 'synonyms_beginner', type: 'quiz'},
-            {name: 'Phrasal Verbs', slug: 'phrasal_verbs', type: 'quiz'},
+            {name: 'Weather', description: 'Current weather conditions for multiple cities', slug: 'weather', type: 'ticker'},
+            {name: 'News', description: 'Latest headlines from around the world', slug: 'news', type: 'ticker'},
+            {name: 'Passage', description: 'Read and explore short text passages', slug: 'passage', type: 'text'},
+            {name: 'Dialogue', description: 'Practice conversations with sample dialogues', slug: 'dialogue', type: 'text'},
+            {name: 'Synonyms', description: 'Test your vocabulary with synonym quizzes', slug: 'synonyms', type: 'quiz'},
+            {name: 'Synonyms Beginner', description: 'Easy synonym quizzes for beginners', slug: 'synonyms_beginner', type: 'quiz'},
+            {name: 'Phrasal Verbs', description: 'Learn English phrasal verbs through quizzes', slug: 'phrasal_verbs', type: 'quiz'},
         ]).returning()
 
         const passageWidget = inserted.find(widget => widget.slug === 'passage')

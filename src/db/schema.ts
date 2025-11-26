@@ -7,7 +7,7 @@ export const weather = pgTable('weather', {
         longitude: doublePrecision().notNull(),
         city: varchar({length: 256}).notNull(),
 
-        temperature: doublePrecision('temperature').notNull(),
+        temperature: doublePrecision().notNull(),
         weatherCode: integer('weather_code').notNull(),
         isDay: boolean('is_day').notNull(),
 
@@ -22,6 +22,7 @@ export const widgets = pgTable('widgets', {
         id: serial('id').primaryKey(),
 
         name: varchar({length: 256}).notNull(),
+        description: text(),
         slug: varchar({length: 256}).notNull(),
         type: varchar({length: 256}).notNull(),
         enabled: boolean().default(true),
@@ -40,7 +41,7 @@ export const prompts = pgTable('prompts', {
         .references(() => widgets.id, {onDelete: 'cascade'})
         .notNull(),
 
-    prompt: text('prompt').notNull(),
+    prompt: text().notNull(),
 
     createdAt: timestamp('created_at', {withTimezone: true}).defaultNow().notNull(),
     updatedAt: timestamp('updated_at', {withTimezone: true}).defaultNow().notNull(),
@@ -53,7 +54,7 @@ export const quizzes = pgTable('quizzes', {
         .references(() => widgets.id, {onDelete: 'cascade'})
         .notNull(),
 
-    description: text('description').notNull(),
+    description: text().notNull(),
 
     createdAt: timestamp('created_at', {withTimezone: true}).defaultNow().notNull(),
     updatedAt: timestamp('updated_at', {withTimezone: true}).defaultNow().notNull(),
@@ -93,7 +94,7 @@ export const widgetTexts = pgTable('widget_texts', {
             .references(() => widgets.id, {onDelete: 'cascade'})
             .notNull(),
 
-        content: text('content').notNull(),
+        content: text().notNull(),
 
         createdAt: timestamp('created_at', {withTimezone: true}).defaultNow().notNull(),
         updatedAt: timestamp('updated_at', {withTimezone: true}).defaultNow().notNull(),
@@ -105,8 +106,8 @@ export const widgetTexts = pgTable('widget_texts', {
 export const users = pgTable('users', {
     id: serial('id').primaryKey(),
 
-    username: varchar('username', {length: 256}).notNull().unique(),
-    password: varchar('password', {length: 256}).notNull(),
+    username: varchar({length: 256}).notNull().unique(),
+    password: varchar({length: 256}).notNull(),
     role: varchar('role', {length: 256}).notNull().default('user'),
 
     createdAt: timestamp('created_at', {withTimezone: true}).defaultNow().notNull(),
