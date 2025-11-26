@@ -114,7 +114,7 @@ router.get('/', async (_req: Request, res: Response) => {
  *                   type: string
  *                   example: "Unknown error"
  */
-router.post('/:id/generate', requirePermission('widgets.update'), async (req: Request, res: Response) => {
+router.post('/:id/generate', requirePermission('widgets.generate'), async (req: Request, res: Response) => {
     const id = Number(req.params.id)
 
     if (!id || Number.isNaN(id)) {
@@ -201,7 +201,7 @@ router.post('/:id/generate', requirePermission('widgets.update'), async (req: Re
  *                   type: string
  *                   example: "Unknown error"
  */
-router.patch('/:id', async (req: Request, res: Response) => {
+router.patch('/:id', requirePermission('widgets.update'), async (req: Request, res: Response) => {
     try {
         const id = Number(req.params.id)
 
