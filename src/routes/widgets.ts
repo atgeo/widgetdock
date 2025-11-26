@@ -6,6 +6,8 @@ import {getQuestionsForWidget} from '../services/quiz/quizService.js'
 import {fetchPhonetic} from '../services/dictionaryService.js'
 import {getNews} from '../services/newsService.js'
 import {getWeatherForCities} from '../services/weatherService.js'
+import {requireAuthView} from '../middleware/requireAuthView.js'
+import {checkJwt} from '../middleware/checkJwt.js'
 
 const router = express.Router()
 
@@ -34,7 +36,7 @@ const router = express.Router()
  *       404:
  *         description: Widget disabled or not found
  */
-router.get('/:slug', checkWidgetEnabled, async (req: Request, res: Response) => {
+router.get('/:slug', requireAuthView, checkWidgetEnabled, async (req: Request, res: Response) => {
     const widget = req.widget
 
     if (!widget)
@@ -111,7 +113,7 @@ router.get('/:slug', checkWidgetEnabled, async (req: Request, res: Response) => 
  *       500:
  *         description: Internal server error
  */
-router.post('/:slug/fetch', checkWidgetEnabled, async (req: Request, res: Response) => {
+router.post('/:slug/fetch', checkJwt, checkWidgetEnabled, async (req: Request, res: Response) => {
     const widget = req.widget
 
     try {
@@ -188,7 +190,7 @@ router.post('/:slug/fetch', checkWidgetEnabled, async (req: Request, res: Respon
  *       404:
  *         description: Widget disabled or not found
  */
-router.post('/:slug/phonetic', checkWidgetEnabled, async (req: Request, res: Response) => {
+router.post('/:slug/phonetic', checkJwt, checkWidgetEnabled, async (req: Request, res: Response) => {
     const {word} = req.body
     const result = await fetchPhonetic(word)
     res.json({result})

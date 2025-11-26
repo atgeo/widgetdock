@@ -3,9 +3,11 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!form) return
 
   form.addEventListener('submit', async (e) => {
-    e.preventDefault() // prevent normal page reload
+    e.preventDefault()
     const username = form.username.value
     const password = form.password.value
+
+    const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || '/dashboard'
 
     try {
       const res = await fetch('/auth/login', {
@@ -25,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('Login success! Access token:', accessToken)
 
       // redirect or show logged-in UI
-      window.location.href = '/dashboard'
+      window.location.href = redirectUrl
     } catch (err) {
       console.error(err.message)
       alert(err.message)

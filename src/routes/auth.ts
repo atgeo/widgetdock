@@ -59,7 +59,7 @@ const router = express.Router()
 router.post('/login', (req: Request, res: Response) => {
     const {username, password} = req.body
 
-    if (username !== 'admin' || password !== 'secret') {
+    if (username !== 'admin' || password !== 'secret117') {
         return res.status(401).json({error: 'Invalid credentials'})
     }
 
@@ -67,7 +67,7 @@ router.post('/login', (req: Request, res: Response) => {
     const refreshSecret = process.env.JWT_REFRESH_SECRET
 
     if (!accessSecret || !refreshSecret) {
-        throw new Error('JWT secrets missing');
+        throw new Error('JWT secrets missing')
     }
 
     const accessToken = jwt.sign({userId: 1, role: 'admin'}, accessSecret, {expiresIn: '15m'})

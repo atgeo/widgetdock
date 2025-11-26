@@ -10,13 +10,15 @@ export function requireAuthView(req: AuthRequest, res: Response, next: NextFunct
     const refreshSecret = process.env.JWT_REFRESH_SECRET;
 
     if (!token || !refreshSecret) {
-        return res.redirect('/login')
+        const redirectTo = encodeURIComponent(req.originalUrl)
+        return res.redirect(`/login?redirect=${redirectTo}`)
     }
 
     try {
         req.user = jwt.verify(token, refreshSecret) as { userId: number; role?: string }
         return next()
     } catch (err) {
-        return res.redirect('/login')
+        const redirectTo = encodeURIComponent(req.originalUrl)
+        return res.redirect(`/login?redirect=${redirectTo}`)
     }
 }

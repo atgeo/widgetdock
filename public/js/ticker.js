@@ -4,8 +4,21 @@ async function loadTicker () {
   const segments = window.location.pathname.split('/').filter(Boolean)
   const slug = segments.pop() || 'weather'
 
+  if (!accessToken) {
+    await loadAccessToken()
+    if (!accessToken) {
+      tickerEl.textContent = (slug === 'news' ? '⚠ News unavailable' : '⚠ Weather unavailable')
+      return
+    }
+  }
+
   try {
-    const res = await fetch(`/w/${slug}/fetch`, { method: 'POST' })
+    const res = await fetch(`/w/${slug}/fetch`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      }
+    })
     const data = await res.json()
 
     let formattedData = []
