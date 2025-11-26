@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><%= title %></title>
+    <link rel="icon" href="/icons/favicon.png" type="image/png">
+    <link rel="stylesheet" href="/css/home.css">
+</head>
+<body class="min-h-screen bg-white flex items-center justify-center px-6">
+
+<div class="max-w-2xl mx-auto text-center space-y-12">
+
+    <!-- Title -->
+    <h1 class="text-6xl sm:text-7xl font-bold tracking-tight text-gray-900">
+        WidgetDock
+    </h1>
+
+    <!-- Subheadline – calm & confident (2025 style) -->
+    <p class="text-xl sm:text-2xl text-gray-600 leading-relaxed">
+        One home for all your widgets.<br>
+        Beautifully simple.
+    </p>
+
+    <!-- Login Button – the only CTA -->
+    <div class="pt-8">
+        <a href="<%= loginUrl %>"
+           class="group inline-flex items-center gap-3 rounded-xl bg-black px-8 py-4 text-lg font-medium text-white hover:bg-gray-900 focus:outline-none focus-visible:ring-4 focus-visible:ring-gray-300 transition-all">
+            Login
+            <svg class="w-5 h-5 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+        </a>
+    </div>
+
+    <!-- Tiny footer with dynamic year -->
+    <footer class="pt-20 text-sm text-gray-400">
+        © <%= currentYear %> WidgetDock. All rights reserved.
+    </footer>
+
+</div>
+</body>
+</html>

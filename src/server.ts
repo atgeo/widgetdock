@@ -2,6 +2,7 @@ import express from 'express'
 import cookieParser from 'cookie-parser'
 import path from 'path'
 import {fileURLToPath} from 'url'
+import homeRoute from './routes/home.js'
 import authRoutes from './routes/auth.js'
 import loginRoutes from './routes/login.js'
 import dashboardRoutes from './routes/dashboard.js'
@@ -25,6 +26,7 @@ app.set('views', path.join(__dirname, '../views'))
 app.set('view engine', 'ejs')
 
 app.use('/auth', authRoutes)
+app.use(homeRoute)
 app.use(loginRoutes)
 app.use(dashboardRoutes)
 
