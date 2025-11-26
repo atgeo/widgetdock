@@ -141,6 +141,9 @@ export const userRoles = pgTable('user_roles', {
     roleId: integer('role_id')
         .notNull()
         .references(() => roles.id, {onDelete: 'cascade'}),
+
+    createdAt: timestamp('created_at', {withTimezone: true}).defaultNow().notNull(),
+    updatedAt: timestamp('updated_at', {withTimezone: true}).defaultNow().notNull(),
 })
 
 export const rolePermissions = pgTable('role_permissions', {

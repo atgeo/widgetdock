@@ -4,5 +4,12 @@ declare module 'express-serve-static-core' {
     interface Request {
         widget?: Widget | null
         user?: User | null
+        auth?: JwtAuthPayload
     }
+}
+
+interface JwtAuthPayload {
+    userId: number
+    iat?: number
+    exp?: number
 }

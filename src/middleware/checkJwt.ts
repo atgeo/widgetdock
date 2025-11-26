@@ -14,7 +14,7 @@ export const checkJwt = expressjwt({
 
 export function jwtErrorHandler(
     err: any,
-    req: Request,
+    _req: Request,
     res: Response,
     next: NextFunction
 ) {

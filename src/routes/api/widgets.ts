@@ -5,9 +5,12 @@ import {checkJwt} from '../../middleware/checkJwt.js'
 import {generateWidgetText} from '../../services/text/textService.js'
 import {getAllWidgets, getWidgetById} from '../../repositories/widgetRepository.js'
 import {toggleWidget} from '../../services/widgetService.js'
+import {requirePermission} from '../../middleware/requirePermission.js'
+import {attachUserAuthData} from '../../middleware/attachUserAuthData.js'
 
 const router = express.Router()
 router.use(checkJwt)
+router.use(attachUserAuthData)
 
 /**
  * @openapi
@@ -111,7 +114,7 @@ router.get('/', async (_req: Request, res: Response) => {
  *                   type: string
  *                   example: "Unknown error"
  */
-router.post('/:id/generate', async (req: Request, res: Response) => {
+router.post('/:id/generate', requirePermission('widgets.update'), async (req: Request, res: Response) => {
     const id = Number(req.params.id)
 
     if (!id || Number.isNaN(id)) {
