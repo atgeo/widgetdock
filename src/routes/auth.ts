@@ -76,7 +76,8 @@ router.post('/login', (req: Request, res: Response) => {
     res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict'
+        sameSite: 'strict',
+        priority: 'high',
     })
 
     return res.json({accessToken})

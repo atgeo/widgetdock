@@ -2,7 +2,9 @@ import express from 'express'
 import cookieParser from 'cookie-parser'
 import path from 'path'
 import {fileURLToPath} from 'url'
-import authRouter from './routes/auth.js'
+import authRoutes from './routes/auth.js'
+import loginRoutes from './routes/login.js'
+import dashboardRoutes from './routes/dashboard.js'
 import widgetRoutes from './routes/widgets.js'
 import apiWidgetRoutes from './routes/api/widgets.js'
 import swaggerUi from 'swagger-ui-express'
@@ -22,7 +24,9 @@ app.use(cookieParser())
 app.set('views', path.join(__dirname, '../views'))
 app.set('view engine', 'ejs')
 
-app.use('/auth', authRouter)
+app.use('/auth', authRoutes)
+app.use(loginRoutes)
+app.use(dashboardRoutes)
 
 app.use('/w', widgetRoutes)
 app.use('/api/widgets', apiWidgetRoutes)
