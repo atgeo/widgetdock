@@ -36,6 +36,13 @@
       "when": 1764148179043,
       "tag": "0004_charming_mindworm",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1764160415946,
+      "tag": "0005_big_paladin",
+      "breakpoints": true
     }
   ]
 }
