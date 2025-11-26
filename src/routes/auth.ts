@@ -78,6 +78,36 @@ router.post('/login', async (req: Request, res: Response) => {
 
 /**
  * @openapi
+ * /auth/logout:
+ *   post:
+ *     summary: Log the user out
+ *     tags:
+ *       - Auth
+ *     responses:
+ *       200:
+ *         description: Logout successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Logged out successfully
+ */
+router.post('/logout', (req, res) => {
+    res.clearCookie('refreshToken', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        priority: 'high',
+    });
+
+    res.json({message: 'Logged out successfully'})
+})
+
+/**
+ * @openapi
  * /auth/refresh-token:
  *   post:
  *     summary: Refresh access token
