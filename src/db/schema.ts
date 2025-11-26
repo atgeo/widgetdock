@@ -102,3 +102,13 @@ export const widgetTexts = pgTable('widget_texts', {
     ],
 )
 
+export const users = pgTable('users', {
+    id: serial('id').primaryKey(),
+
+    username: varchar('username', {length: 256}).notNull().unique(),
+    password: varchar('password', {length: 256}).notNull(),
+    role: varchar('role', {length: 256}).notNull().default('user'),
+
+    createdAt: timestamp('created_at', {withTimezone: true}).defaultNow().notNull(),
+    updatedAt: timestamp('updated_at', {withTimezone: true}).defaultNow().notNull(),
+})
