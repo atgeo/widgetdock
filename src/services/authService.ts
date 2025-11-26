@@ -21,7 +21,7 @@ export async function loginUser(username: string, password: string) {
         throw new Error('JWT refresh secret not set');
     }
 
-    const accessToken = jwt.sign({userId: user.id, role: user.role}, accessSecret, {expiresIn: '15m'})
+    const accessToken = jwt.sign({userId: user.id}, accessSecret, {expiresIn: '15m'})
     const refreshToken = jwt.sign({userId: user.id}, refreshSecret, {expiresIn: '7d'})
 
     return {
@@ -30,7 +30,6 @@ export async function loginUser(username: string, password: string) {
         user: {
             id: user.id,
             username: user.username,
-            role: user.role,
         },
     }
 }

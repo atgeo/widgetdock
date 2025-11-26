@@ -16,7 +16,7 @@ export async function requireAuthView(req: AuthRequest, res: Response, next: Nex
     }
 
     try {
-        const payload = jwt.verify(token, refreshSecret) as { userId: number; role?: string }
+        const payload = jwt.verify(token, refreshSecret) as { userId: number }
         const user = await getUserById(payload.userId)
 
         if (!user) {
