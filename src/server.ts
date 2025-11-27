@@ -8,6 +8,7 @@ import loginRoutes from './routes/login.js'
 import dashboardRoutes from './routes/dashboard.js'
 import widgetRoutes from './routes/widgets.js'
 import apiWidgetRoutes from './routes/api/widgets.js'
+import apiUserRoutes from './routes/api/users.js'
 import swaggerUi from 'swagger-ui-express'
 import {swaggerSpec} from './docs/swagger.js'
 import {jwtErrorHandler} from './middleware/checkJwt.js'
@@ -32,6 +33,7 @@ app.use(dashboardRoutes)
 
 app.use('/w', widgetRoutes)
 app.use('/api/widgets', apiWidgetRoutes)
+app.use('/api/users', apiUserRoutes)
 
 app.use(jwtErrorHandler)
 
