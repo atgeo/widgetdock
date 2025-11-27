@@ -4,7 +4,7 @@ import {and, eq} from 'drizzle-orm'
 import {getPromptForWidgetOrFail} from '../promptService.js'
 import {generateText} from '../openai/openaiService.js'
 
-export async function generateWidgetText(widgetId: number) {
+const generateWidgetText = async (widgetId: number) => {
     const [widget] = await db.select().from(widgets).where(eq(widgets.id, widgetId))
     if (!widget) throw new Error(`Widget not found: ${widgetId}`)
 
@@ -27,7 +27,7 @@ export async function generateWidgetText(widgetId: number) {
         })
 }
 
-export async function getTextForWidget(widgetId: number) {
+const getTextForWidget = async (widgetId: number) => {
     const [widget] = await db
         .select()
         .from(widgets)
@@ -58,3 +58,5 @@ export async function getTextForWidget(widgetId: number) {
 
     return paragraphs.join('\n')
 }
+
+export {generateWidgetText, getTextForWidget}

@@ -7,7 +7,7 @@ import {parseQuizText} from './quizParsingService.js'
 import {getPromptForWidgetOrFail} from '../promptService.js'
 import {getWidgetById} from '../../repositories/widgetRepository.js'
 
-export async function generateQuizQuestions(widgetId: number) {
+const generateQuizQuestions = async (widgetId: number) => {
     const widget = await getWidgetById(widgetId)
     if (!widget || widget.type !== 'quiz') throw new Error('Parent widget is not a quiz widget')
 
@@ -26,7 +26,7 @@ export async function generateQuizQuestions(widgetId: number) {
     })
 }
 
-export async function getQuestionsForWidget(widgetId: number) {
+const getQuestionsForWidget = async (widgetId: number) => {
     const [widget] = await db
         .select()
         .from(widgets)
@@ -47,3 +47,5 @@ export async function getQuestionsForWidget(widgetId: number) {
 
     return await fetchQuestionsByQuizId(quiz.id)
 }
+
+export {generateQuizQuestions, getQuestionsForWidget}

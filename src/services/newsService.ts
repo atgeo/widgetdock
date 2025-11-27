@@ -6,7 +6,7 @@ interface NewsItem {
     source_name: string
 }
 
-export async function getNews() {
+const getNews = async () => {
     const url = `https://newsdata.io/api/1/latest?apikey=${process.env.NEWS_API_KEY}&language=en&prioritydomain=top`
     const res = await fetch(url)
     const data = await res.json()
@@ -19,3 +19,5 @@ export async function getNews() {
         }
     ))
 }
+
+export {getNews}

@@ -2,7 +2,7 @@ import {db} from '../db/db.js'
 import {prompts} from '../db/schema.js'
 import {eq} from 'drizzle-orm'
 
-export async function getPromptForWidgetOrFail(widgetId: number) {
+const getPromptForWidgetOrFail = async (widgetId: number) => {
     const [promptRow] = await db
         .select()
         .from(prompts)
@@ -16,3 +16,5 @@ export async function getPromptForWidgetOrFail(widgetId: number) {
         prompt: promptRow.prompt
     }
 }
+
+export {getPromptForWidgetOrFail}

@@ -8,7 +8,7 @@ if (!process.env.OPENAI_MODEL) {
 
 const model = process.env.OPENAI_MODEL
 
-export async function generateText(prompt: string) {
+const generateText = async (prompt: string) => {
     const completion = await openai.chat.completions.create({
         messages: [
             {
@@ -25,3 +25,5 @@ export async function generateText(prompt: string) {
 
     return completion.choices?.[0]?.message.content || 'No content returned'
 }
+
+export {generateText}

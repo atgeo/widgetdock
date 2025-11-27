@@ -5,7 +5,7 @@ interface RawAIQuestion {
     options: string[]
 }
 
-export function parseQuizText(rawText: string): QuestionWithOptions[] {
+const parseQuizText = (rawText: string): QuestionWithOptions[] => {
     let parsed: RawAIQuestion[]
 
     try {
@@ -22,3 +22,5 @@ export function parseQuizText(rawText: string): QuestionWithOptions[] {
         })),
     }))
 }
+
+export {parseQuizText}

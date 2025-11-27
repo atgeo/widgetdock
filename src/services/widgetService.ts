@@ -1,6 +1,6 @@
 import {getWidgetById, setWidgetEnabled} from '../repositories/widgetRepository.js'
 
-export async function toggleWidget(id: number, enable: boolean) {
+const toggleWidget = async (id: number, enable: boolean) => {
     const widget = await getWidgetById(id)
     if (!widget) throw new Error('Widget not found')
 
@@ -8,3 +8,5 @@ export async function toggleWidget(id: number, enable: boolean) {
 
     return {success: true, message: `Widget ${enable ? 'enabled' : 'disabled'} successfully`}
 }
+
+export {toggleWidget}

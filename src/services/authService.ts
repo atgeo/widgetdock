@@ -4,7 +4,7 @@ import {eq} from 'drizzle-orm'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
-export async function loginUser(username: string, password: string) {
+const loginUser = async (username: string, password: string) => {
     const [user] = await db.select().from(users).where(eq(users.username, username))
     if (!user) throw new Error('Invalid credentials')
 
@@ -33,3 +33,5 @@ export async function loginUser(username: string, password: string) {
         },
     }
 }
+
+export {loginUser}

@@ -164,7 +164,9 @@ async function getWeather(city: string) {
     }
 }
 
-export async function getWeatherForCities(cities: string[]) {
+const getWeatherForCities = async (cities: string[]) => {
     const promises = cities.map(getWeather)
     return Promise.all(promises)
 }
+
+export {getWeatherForCities}
