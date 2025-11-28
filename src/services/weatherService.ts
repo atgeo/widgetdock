@@ -50,7 +50,7 @@ const weatherCodeMap: Record<number, WeatherInfo> = {
     99: {text: 'Thunderstorm + heavy hail', icon: '⛈️'},
 }
 
-function getConditions(code: number, isDay: boolean) {
+const getConditions = (code: number, isDay: boolean) => {
     const data = weatherCodeMap[code] || {text: 'Unknown', icon: '❓'}
 
     let icon
@@ -65,7 +65,7 @@ function getConditions(code: number, isDay: boolean) {
     return {text: data.text || 'Unknown', icon}
 }
 
-async function getCoordinates(city: string) {
+const getCoordinates = async (city: string) => {
     const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}`
     const res = await fetch(url)
     const data = await res.json()
@@ -80,7 +80,7 @@ async function getCoordinates(city: string) {
     return {latitude, longitude}
 }
 
-async function updateWeatherFromAPI(city: string, latitude?: number, longitude?: number) {
+const updateWeatherFromAPI = async (city: string, latitude?: number, longitude?: number) => {
     try {
         // Only call geocoding API if coordinates are missing
         if (latitude == null || longitude == null) {
@@ -129,7 +129,7 @@ async function updateWeatherFromAPI(city: string, latitude?: number, longitude?:
     }
 }
 
-async function getWeather(city: string) {
+const getWeather = async (city: string) => {
     try {
         const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000)
 
