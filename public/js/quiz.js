@@ -1,4 +1,4 @@
-function quizWidget () {
+const quizWidget = () => {
   const raw = document.getElementById('quiz-data').textContent
   const parsed = JSON.parse(raw)
 

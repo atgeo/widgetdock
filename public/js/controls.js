@@ -3,13 +3,13 @@ let speed = document.querySelector('meta[name="speed"]')?.content || 0.6
 const toggleBtn = document.getElementById('toggleBtn')
 const refreshBtn = document.getElementById("refreshBtn")
 
-function scrollStep () {
+const scrollStep = () => {
   if (!scrolling) return
   window.scrollBy(0, speed)
   requestAnimationFrame(scrollStep)
 }
 
-function toggleScroll () {
+const toggleScroll = () => {
   scrolling = !scrolling
 
   if (scrolling) {

@@ -1,6 +1,6 @@
 const tickerEl = document.getElementById('scroll-text')
 
-async function loadTicker () {
+const loadTicker = async () => {
   const segments = window.location.pathname.split('/').filter(Boolean)
   const slug = segments.pop() || 'weather'
 
@@ -37,7 +37,7 @@ async function loadTicker () {
   }
 }
 
-function adjustTickerSpeed() {
+const adjustTickerSpeed = () => {
   const text = document.getElementById('scroll-text')
 
   const speed = 100 // pixels per second

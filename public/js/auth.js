@@ -1,6 +1,6 @@
 let accessToken = null
 
-async function loadAccessToken () {
+const loadAccessToken = async () => {
   try {
     const res = await fetch('/auth/refresh-token', {
       method: 'POST',
