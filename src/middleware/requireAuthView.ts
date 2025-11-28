@@ -6,7 +6,7 @@ interface AuthRequest extends Request {
     user?: { userId: number; username: string }
 }
 
-export async function requireAuthView(req: AuthRequest, res: Response, next: NextFunction) {
+const requireAuthView = async (req: AuthRequest, res: Response, next: NextFunction) => {
     const token = req.cookies.refreshToken
     const refreshSecret = process.env.JWT_REFRESH_SECRET
     const redirectTo = encodeURIComponent(req.originalUrl)
@@ -29,3 +29,5 @@ export async function requireAuthView(req: AuthRequest, res: Response, next: Nex
         return res.redirect(`/login?redirect=${redirectTo}`)
     }
 }
+
+export {requireAuthView}

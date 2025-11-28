@@ -1,7 +1,7 @@
 import type {Request, Response, NextFunction} from 'express'
 import {getWidgetBySlug} from '../repositories/widgetRepository.js'
 
-export async function checkWidgetEnabled(req: Request, res: Response, next: NextFunction) {
+const checkWidgetEnabled = async (req: Request, res: Response, next: NextFunction) => {
     const widgetName = req.params.slug
 
     if (!widgetName) {
@@ -23,3 +23,5 @@ export async function checkWidgetEnabled(req: Request, res: Response, next: Next
         res.status(500).send('Server error')
     }
 }
+
+export {checkWidgetEnabled}

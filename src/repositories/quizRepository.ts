@@ -3,7 +3,7 @@ import {quizzes, quizQuestions, quizOptions} from '../db/schema.js'
 import {eq, inArray} from 'drizzle-orm'
 import type {QuestionWithOptions, QuizOption} from '../types/quiz.js'
 
-export async function getQuizByWidgetId(widgetId: number) {
+const getQuizByWidgetId = async (widgetId: number) => {
     const [quiz] = await db
         .select()
         .from(quizzes)
@@ -13,7 +13,7 @@ export async function getQuizByWidgetId(widgetId: number) {
     return quiz ?? null
 }
 
-export async function fetchQuestionsByQuizId(quizId: number): Promise<QuestionWithOptions[]> {
+const fetchQuestionsByQuizId = async (quizId: number): Promise<QuestionWithOptions[]> => {
     const questions = await db
         .select()
         .from(quizQuestions)
@@ -35,7 +35,7 @@ export async function fetchQuestionsByQuizId(quizId: number): Promise<QuestionWi
     }))
 }
 
-export async function saveQuestions(quizId: number, questions: QuestionWithOptions[]) {
+const saveQuestions = async (quizId: number, questions: QuestionWithOptions[]) => {
     for (const question of questions) {
         const [insertedQuestion] = await db
             .insert(quizQuestions)
@@ -60,3 +60,5 @@ export async function saveQuestions(quizId: number, questions: QuestionWithOptio
         }
     }
 }
+
+export {getQuizByWidgetId, fetchQuestionsByQuizId, saveQuestions}

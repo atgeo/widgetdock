@@ -1,7 +1,7 @@
 import type {Request, Response, NextFunction} from 'express'
 import {getUserWithPermissions} from '../services/userService.js'
 
-export async function attachUserAuthData(req: Request, res: Response, next: NextFunction) {
+const attachUserAuthData = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userId = req.auth?.userId
         if (!userId) {
@@ -19,3 +19,5 @@ export async function attachUserAuthData(req: Request, res: Response, next: Next
         next(err)
     }
 }
+
+export {attachUserAuthData}
