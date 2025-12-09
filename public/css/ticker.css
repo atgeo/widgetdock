@@ -1,0 +1,30 @@
+body {
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-family: Open Sans, sans-serif;
+    margin: 0 auto;
+    max-width: 800px;
+    width: 100%;
+}
+
+#scroll-container {
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+#scroll-text {
+    display: inline-block;
+    font-size: 32px;
+    font-weight: 700;
+    will-change: transform;
+    animation: scroll-left 20s linear infinite;
+}
+
+@keyframes scroll-left {
+    from {
+        transform: translateX(1080px);  /* text fully visible from the start */
+    }
+    to {
+        transform: translateX(-100%); /* scroll text off the left edge */
+    }
+}

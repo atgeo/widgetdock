@@ -1,0 +1,54 @@
+body {
+    margin: 0 auto;
+    background: #111;
+    color: #fff;
+    font-family: Open Sans, sans-serif;
+    width: 1080px;
+}
+
+h1 {
+    font-size: 1.2em;
+}
+
+p {
+    margin-block-start: 0;
+}
+
+/* Full-screen reading area */
+.reader-container {
+    overflow: hidden;
+    padding: 0 100px 100px;
+    box-sizing: border-box;
+}
+
+.reader {
+    position: relative;
+    transform: translateY(0);
+    line-height: 2;
+    font-size: 48px;
+}
+
+/* Controls */
+.controls {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+}
+
+button {
+    font-size: 18px;
+    padding: 8px 18px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.a::before {
+    content: "Joshua: ";
+    font-weight: bold;
+}
+
+/* B: */
+.b::before {
+    content: "Emma: ";
+    font-weight: bold;
+}

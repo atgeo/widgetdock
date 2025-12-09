@@ -14,8 +14,8 @@
     "build": "npm run build:ts && npm run build:css",
     "build:ts": "tsc",
     "dev": "tsx watch --env-file=.env src/server.ts",
-    "dev:css": "postcss src/styles/*.css --dir public/css --watch",
-    "build:css": "NODE_ENV=production postcss src/styles/*.css -d public/css",
+    "dev:css": "npx tailwindcss -i src/styles/input.css --o public/css/tailwind.css --watch",
+    "build:css": "npx tailwindcss -i src/styles/input.css -o public/css/tailwind.css --minify",
     "drizzle:generate": "drizzle-kit generate",
     "drizzle-migrate": "drizzle-kit migrate",
     "db:seed": "tsx --env-file=.env src/db/seed.ts"
@@ -42,6 +42,7 @@
     "tailwindcss": "^4.1.17"
   },
   "devDependencies": {
+    "@tailwindcss/cli": "^4.1.17",
     "@types/bcrypt": "^6.0.0",
     "@types/cookie-parser": "^1.4.10",
     "@types/express": "^5.0.5",
@@ -49,8 +50,7 @@
     "@types/pg": "^8.15.6",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
-    "drizzle-kit": "^0.31.7",
-    "postcss-cli": "^11.0.1",
+    "drizzle-kit": "^0.31.8",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3"
   }
