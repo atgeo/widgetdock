@@ -1,0 +1,15 @@
+@import "tailwindcss/theme";
+
+@theme {
+    --color-heading: #c55130;
+}
+
+.fallacy-title {
+    @apply font-extrabold leading-tight text-[64px] text-center mb-16;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.heading-text {
+    color: var(--color-heading);
+    @apply font-bold uppercase leading-tight;
+}

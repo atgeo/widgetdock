@@ -1,12 +1,42 @@
 <!DOCTYPE html>
-<html lang="en" class="h-[100%]">
+<html lang="en" class="h-dvh">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title></title>
-    <link rel="stylesheet" href="/css/tailwind.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Frame</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="/css/tailwind.css" rel="stylesheet">
 </head>
-<body class="min-h-[100%]">
-
+<body class="flex items-center justify-center min-h-screen font-[Roboto,sans-serif] text-white">
+<div class="fixed inset-0 h-dvh -z-10 bg-[url('/images/bg.jpg')] bg-cover bg-no-repeat [background-position-y:-600px] brightness-[1.04]"></div>
+<div class="relative z-10 w-full max-w-4xl pb-64">
+    <% results.forEach(slide => { %>
+        <div class="mb-128">
+            <img src="<%= slide.image %>" alt="" class="mb-8">
+            <h1 class="fallacy-title"><%= slide.title %></h1>
+            <div class="text-[40px] space-y-8">
+                <% slide.blocks.forEach(block => { %>
+                    <div>
+                        <h2 class="heading-text"><%= block.heading %></h2>
+                        <% block.content.forEach(item => { %>
+                            <% if (item.type === "text") { %>
+                                <p><%= item.value %></p>
+                            <% } %>
+                            <% if (item.type === "list") { %>
+                                <div class=" mb-2 [&>p]:pl-16 [&>p]:before:content-['•'] [&>p]:before:absolute [&>p]:before:left-8">
+                                    <% item.items.forEach(li => { %>
+                                        <p><%= li %></p>
+                                    <% }) %>
+                                </div>
+                            <% } %>
+                        <% }) %>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    <% }) %>
+</div>
 </body>
 </html>

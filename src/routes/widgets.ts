@@ -1,5 +1,6 @@
 import express from 'express'
 import type {Request, Response} from 'express'
+import fs from 'fs'
 import {checkWidgetEnabled} from '../middleware/checkWidgetEnabled.js'
 import {getTextForWidget} from '../services/text/textService.js'
 import {getQuestionsForWidget} from '../services/quiz/quizService.js'
@@ -55,6 +56,12 @@ router.get('/:slug', requireAuthView, checkWidgetEnabled, async (req: Request, r
             break
         case 'ticker':
             template = 'widgets/ticker'
+            break
+        case 'frame':
+            template = 'widgets/frame'
+            results = JSON.parse(
+                fs.readFileSync("./data/slides.json", "utf8")
+            )
             break
         default:
             return res.status(400).json({error: 'Unknown widget type'})
