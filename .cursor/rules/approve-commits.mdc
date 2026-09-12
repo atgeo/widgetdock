@@ -1,0 +1,10 @@
+---
+description: Require user approval before git commits
+alwaysApply: true
+---
+
+# Commits
+
+Never run `git commit` unless the user explicitly asks you to commit.
+
+When changes are ready, stage files if asked, summarize what will be committed, and wait for approval.
